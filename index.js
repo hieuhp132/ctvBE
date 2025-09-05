@@ -11,6 +11,9 @@ const port = process.env.PORT || 3000;
 
 const app = express(); db();
 
+// Trust proxy for Render deployment
+app.set('trust proxy', 1);
+
 const rateLimit = require("express-rate-limit");
 
 const corsOptions = {
@@ -49,6 +52,11 @@ app.use("/api/jobs", require("./routes/job"));        // ✅ thêm
 app.use("/api/referrals", require("./routes/referral")); // ✅ thêm
 app.use("/api/notifications", require("./routes/notification"));
 app.use("/api/metrics", require("./routes/metrics"));
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
 
 const server = http.createServer(app);
 

@@ -11,7 +11,9 @@ const jobSchema = new mongoose.Schema({
     requirement: { type: String, default: "" },
     benefits: { type: String, default: "" }
   },
-  other: { type: String, default: "" }
+  other: { type: String, default: "" },
+  jdLink: { type: String, default: "" },
+  jdFileName: { type: String, default: "" }
 }, { timestamps: true });
 
 const Job = mongoose.model("Job", jobSchema);
