@@ -25,9 +25,11 @@ exports.updateJobJD = async (req, res) => {
     const { id } = req.params;
     const jdLink = req.body.jdLink || '';
     const jdFileName = req.file ? req.file.filename : undefined;
+    const clearFile = req.body.clearFile === 'true';
     const update = {};
     if (typeof jdLink === 'string') update.jdLink = jdLink;
     if (jdFileName) update.jdFileName = jdFileName;
+    if (clearFile) update.jdFileName = '';
     const job = await Job.findByIdAndUpdate(id, update, { new: true });
     if (!job) return res.status(404).json({ message: 'Job not found' });
     res.json(job);
