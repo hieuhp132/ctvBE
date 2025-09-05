@@ -6,15 +6,15 @@ const express = require('express');
 const cors = require('cors');
 
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const hostname = '0.0.0.0';
+const port = process.env.PORT || 3000;
 
 const app = express(); db();
 
 const rateLimit = require("express-rate-limit");
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: true, // reflect request origin to support multiple domains & production
   credentials: true,
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization']
