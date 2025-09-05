@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["candidate", "admin", "recruiter"],
-        default: "candidate"
+        default: "recruiter"
     },
     jobs: [{
         type: mongoose.Schema.Types.ObjectId,
