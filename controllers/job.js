@@ -23,13 +23,15 @@ exports.uploadJD = multer({ storage }).single('jd');
 exports.updateJobJD = async (req, res) => {
   try {
     const { id } = req.params;
-    const jdLink = req.body.jdLink || '';
+    const jdLink = typeof req.body.jdLink === 'string' ? req.body.jdLink : undefined;
     const jdFileName = req.file ? req.file.filename : undefined;
     const clearFile = req.body.clearFile === 'true';
     const update = {};
-    if (typeof jdLink === 'string') update.jdLink = jdLink;
+    if (jdLink !== undefined) update.jdLink = jdLink; // allow empty string to clear link
     if (jdFileName) update.jdFileName = jdFileName;
     if (clearFile) update.jdFileName = '';
+    // If we uploaded a file but no explicit jdLink provided, set link to filename so clients can build URL
+    if (jdFileName && jdLink === undefined) update.jdLink = jdFileName;
     const job = await Job.findByIdAndUpdate(id, update, { new: true });
     if (!job) return res.status(404).json({ message: 'Job not found' });
     res.json(job);
