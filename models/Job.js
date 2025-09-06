@@ -6,6 +6,11 @@ const jobSchema = new mongoose.Schema({
   location: { type: String, required: true },
   bonus: { type: Number, default: 0 },
   deadline: { type: Date },
+  rewardCandidateUSD: { type: Number, default: 0 },
+  rewardInterviewUSD: { type: Number, default: 0 },
+  vacancies: { type: Number, default: 0 },
+  applicants: { type: Number, default: 0 },
+  status: { type: String, default: "Active" },
   jobsdetail: {
     description: { type: String, default: "" },
     requirement: { type: String, default: "" },
