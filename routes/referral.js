@@ -16,4 +16,7 @@ router.get("/mine", auth, role(["recruiter"]), referralCtrl.getMyReferrals);
 // Admin cập nhật trạng thái/bonus referral
 router.put("/:id", auth, role(["admin"]), referralCtrl.updateReferralStatus);
 
+// Admin chốt deal (onboard/reject)
+router.put("/:id/finalize", auth, role(["admin"]), referralCtrl.finalizeReferral);
+
 module.exports = router;
