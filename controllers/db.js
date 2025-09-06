@@ -34,7 +34,7 @@ exports.resetUsers = async (req, res) => {
             name: "Admin",
             email: "admin@example.com",
             password: "admin123456789A!", 
-            credit: 1000,
+            credit: 10000,
             role: "admin",
             paymentMethod: "credit_card",
         },
