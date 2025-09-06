@@ -79,3 +79,18 @@ exports.updateJobJD = async (req, res) => {
     res.status(500).json({ message: "Server error" }); 
   } 
 };
+
+exports.unsaveJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.body.userId;
+    if (!userId) return res.status(400).json({ message: "Missing userId" });
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+    job.savedBy = job.savedBy.filter(id => id !== userId);
+    await job.save();
+    res.json({ success: true, job });
+  } catch (err) {
+    res.status(400).json({ message: "Unsave job failed", error: err.message });
+  }
+};
