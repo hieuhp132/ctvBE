@@ -144,3 +144,54 @@ exports.updateReferralStatus = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.finalizeReferral = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminId = req.user.id;
+
+    const referral = await Referral.findById(id);
+    if (!referral) {
+      return res.status(404).json({ message: "Referral not found" });
+    }
+    if (referral.admin.toString() !== adminId) {
+        return res.status(403).json({ message: "Not authorized to finalize this referral" });
+    }
+    if (referral.finalized) {
+      return res.status(400).json({ message: "Referral already finalized" });
+    }
+
+    // If status is Onboard, process payment
+    if (referral.status === "Onboard") {
+      const bonusAmount = referral.bonus;
+      if (bonusAmount > 0) {
+        const admin = await User.findById(adminId);
+        const recruiter = await User.findById(referral.recruiter);
+
+        if (!admin || !recruiter) {
+          return res.status(404).json({ message: "Admin or Recruiter not found" });
+        }
+
+        if (admin.credit < bonusAmount) {
+          return res.status(400).json({ message: "Insufficient admin credit" });
+        }
+
+        admin.credit -= bonusAmount;
+        recruiter.credit += bonusAmount;
+
+        await admin.save();
+        await recruiter.save();
+      }
+    }
+
+    // Mark as finalized
+    referral.finalized = true;
+    referral.finalizedAt = new Date();
+    await referral.save();
+
+    res.json({ success: true, message: "Referral finalized successfully", referral });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
