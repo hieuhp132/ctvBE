@@ -16,7 +16,7 @@ const referralSchema = new mongoose.Schema(
     job: { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true },
     status: {
       type: String,
-      enum: ["submitted", "interviewing", "offer", "hired", "rejected"],
+      enum: ["submitted", "interviewing", "offer", "hired", "onboard", "rejected"],
       default: "submitted",
     },
     bonus: { type: Number, default: 0 },
