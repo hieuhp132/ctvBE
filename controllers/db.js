@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { sendEmail } = require('../utils/email');
+const { getWelcomeEmailTemplate } = require('../utils/emailTemplates');
 
 
 exports.showUsers = async (req, res) => {
@@ -104,6 +106,16 @@ exports.doRegister = async (req, res) => {
         await user.save();
         console.log('New user created: ', user._id);
     
+        // Send welcome email
+        try {
+            const { subject, html } = getWelcomeEmailTemplate(user.name);
+            await sendEmail(user.email, subject, html);
+            console.log(`Welcome email sent to ${user.email}`);
+        } catch (emailError) {
+            console.error(`Failed to send welcome email to ${user.email}:`, emailError);
+            // Do not block the response for email errors
+        }
+
         res.json({
             success: true,
             massage: 'Dang ky thanh cong',
