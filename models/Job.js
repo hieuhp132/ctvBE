@@ -18,7 +18,8 @@ const jobSchema = new mongoose.Schema({
   },
   other: { type: String, default: "" },
   jdLink: { type: String, default: "" },
-  jdFileName: { type: String, default: "" }
+  jdFileName: { type: String, default: "" },
+  savedBy: [{ type: String }] // array of userId/email who saved this job
 }, { timestamps: true });
 
 const Job = mongoose.model("Job", jobSchema);

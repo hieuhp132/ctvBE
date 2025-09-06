@@ -1,3 +1,18 @@
+// Save job for user
+exports.saveJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.body.userId;
+    if (!userId) return res.status(400).json({ message: "Missing userId" });
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+    if (!job.savedBy.includes(userId)) job.savedBy.push(userId);
+    await job.save();
+    res.json({ success: true, job });
+  } catch (err) {
+    res.status(400).json({ message: "Save job failed", error: err.message });
+  }
+};
 const User = require('../models/User'); const Job = require("../models/Job");
 
 exports.deleteJob = async (req, res) => { try { const deletedJob = await Job.findByIdAndDelete(req.params.id); if (!deletedJob) return res.status(404).json({ message: "Job not found" }); res.json({ message: "Job deleted" }); } catch (err) { res.status(500).json({ message: "Delete failed", error: err.message }); } };
