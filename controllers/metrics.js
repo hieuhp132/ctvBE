@@ -3,23 +3,18 @@ const User = require("../models/User");
 
 exports.balances = async (req, res) => {
   try {
-    // Admin credit: start 5000 minus sum of hired bonuses
-    const baseCredit = 5000;
-    const hired = await Referral.aggregate([
-      { $match: { status: 'hired' } },
-      { $group: { _id: null, total: { $sum: { $toDouble: "$bonus" } } } },
-    ]);
-    const paid = hired?.[0]?.total || 0;
-    // CTV bonus map by recruiter id
-    const byRecruiter = await Referral.aggregate([
-      { $match: { status: 'hired' } },
-      { $group: { _id: "$recruiter", total: { $sum: { $toDouble: "$bonus" } } } },
-    ]);
+    // Lấy credit trực tiếp từ user admin
+    const admin = await User.findOne({ role: "admin" });
+    const adminCredit = admin ? admin.credit : 0;
+
+    // Lấy bonus của từng recruiter từ trường credit
+    const recruiters = await User.find({ role: "recruiter" });
     const ctvBonusById = {};
-    for (const r of byRecruiter) {
-      ctvBonusById[String(r._id)] = r.total;
+    for (const r of recruiters) {
+      ctvBonusById[String(r._id)] = r.credit || 0;
     }
-    res.json({ adminCredit: baseCredit - paid, ctvBonusById });
+
+    res.json({ adminCredit, ctvBonusById });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }

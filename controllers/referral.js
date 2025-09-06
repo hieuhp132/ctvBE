@@ -123,7 +123,17 @@ exports.updateReferralStatus = async (req, res) => {
       if (status === 'hired') {
         await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Hired. Bonus: ${referral.bonus}` });
         await Notification.create({ role: 'admin', message: `Bonus ${referral.bonus} paid to recruiter ${referral.recruiter}` });
-        // Optionally, adjust admin credit here if persisted in DB
+        // Adjust admin and recruiter credits in DB
+        const admin = await User.findOne({ role: "admin" });
+        if (admin) {
+          admin.credit = Math.max(0, (admin.credit || 0) - (referral.bonus || 0));
+          await admin.save();
+        }
+        const recruiter = await User.findById(referral.recruiter);
+        if (recruiter) {
+          recruiter.credit = (recruiter.credit || 0) + (referral.bonus || 0);
+          await recruiter.save();
+        }
       } else if (status === 'rejected') {
         await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Rejected` });
       }
