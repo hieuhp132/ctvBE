@@ -8,20 +8,11 @@ const userSchema = new mongoose.Schema({
     },
     email: { 
         type: String,
+        required: true,
     },
     password: {
         type: String,
-        required: function() {
-            return !this.googleId && this.facebookId;
-        },
-        minlength: [15, "Mat khau 15 ky tu"],
-        validate: {
-            validator: function (v) {
-                if(!v || this.googleId || this.facebookId) return true;
-                return passwordRegex.test(v);
-            },
-            message: props => "Mat khau can co 1 chu hoa, 1 chu thuong, 1 so va 1 ky tu dac biet"
-        }
+        required: true,
     },
     credit: {
         type: Number,

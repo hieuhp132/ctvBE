@@ -17,23 +17,23 @@ async function seed() {
     await Job.deleteMany({});
     await Referral.deleteMany({});
 
-    // Tạo password hash
-    const password = "StrongPassword@123";
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Tạo password đơn giản cho admin và recruiter
+    const passwordAdmin = "admin123";
+
+    const recruiterPassword = "123456";
 
     // === Users ===
     const admin = await User.create({
       name: "Admin User",
       email: "admin@example.com",
-      password: hashedPassword,
+      password: passwordAdmin,
       role: "admin",
     });
 
     const recruiter = await User.create({
       name: "Recruiter User",
       email: "recruiter@example.com",
-      password: hashedPassword,
+      password: recruiterPassword,
       role: "recruiter",
       connections: [admin._id],
     });
