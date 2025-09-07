@@ -131,7 +131,7 @@ exports.getMyReferrals = async (req, res) => {
 exports.updateReferralStatus = async (req, res) => {
   try {
     const { status, bonus } = req.body;
-    const allowed = ["submitted", "interviewing", "offer", "hired", "rejected"];
+    const allowed = ["submitted", "interviewing", "offer", "hired", "onboard", "rejected"];
     if (status && !allowed.includes(status))
       return res.status(400).json({ message: "Invalid status" });
 
