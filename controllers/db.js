@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { sendEmail } = require('../utils/email');
 const { getWelcomeEmailTemplate } = require('../utils/emailTemplates');
+const { sendWelcomeEmail } = require('../utils/email');
 
 
 exports.showUsers = async (req, res) => {
@@ -108,8 +109,7 @@ exports.doRegister = async (req, res) => {
     
         // Send welcome email
         try {
-            const { subject, html } = getWelcomeEmailTemplate(user.name);
-            await sendEmail(user.email, subject, html);
+            await sendWelcomeEmail(user.name, user.email, `${process.env.FRONTEND_URL}/verify-email`);
             console.log(`Welcome email sent to ${user.email}`);
         } catch (emailError) {
             console.error(`Failed to send welcome email to ${user.email}:`, emailError);
