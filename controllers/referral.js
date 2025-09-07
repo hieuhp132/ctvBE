@@ -177,6 +177,25 @@ exports.updateReferralStatus = async (req, res) => {
       }
     } catch {}
 
+    // Send email notifications to all related parties
+    const { sendApplicationStatusUpdate } = require('../utils/email');
+    try {
+      const admin = await User.findById(referral.admin);
+      const recruiter = await User.findById(referral.recruiter);
+
+      if (admin) {
+        await sendApplicationStatusUpdate(referral.candidateName, admin.email, referral.job);
+      }
+      if (recruiter) {
+        await sendApplicationStatusUpdate(referral.candidateName, recruiter.email, referral.job);
+      }
+      if (referral.candidateEmail) {
+        await sendApplicationStatusUpdate(referral.candidateName, referral.candidateEmail, referral.job);
+      }
+    } catch (emailError) {
+      console.error("Failed to send email notifications:", emailError);
+    }
+
     res.json(referral);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
