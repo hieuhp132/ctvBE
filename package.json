@@ -17,6 +17,7 @@
     "supertest": "^7.1.4"
   },
   "scripts": {
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "seed": "node scripts/seeds.js"
   }
 }

@@ -94,3 +94,12 @@ exports.unsaveJob = async (req, res) => {
     res.status(400).json({ message: "Unsave job failed", error: err.message });
   }
 };
+
+exports.resetJobs = async (req, res) => {
+  try {
+    await Job.deleteMany({});
+    res.status(200).json({ message: "All jobs have been reset." });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to reset jobs", error: err.message });
+  }
+};
