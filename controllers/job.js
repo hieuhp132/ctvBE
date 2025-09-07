@@ -10,7 +10,13 @@ exports.saveJob = async (req, res) => {
     if (!job) return res.status(404).json({ message: "Job not found" });
 
     console.log("Job before update:", job);
-    if (!job.savedBy.includes(userId)) job.savedBy.push(userId);
+    console.log("Checking if userId exists in savedBy:", userId, job.savedBy);
+    if (!job.savedBy.includes(userId)) {
+      job.savedBy.push(userId);
+      console.log("UserId added to savedBy:", userId);
+    } else {
+      console.log("UserId already exists in savedBy:", userId);
+    }
 
     await job.save();
     console.log("Job after update:", job);
