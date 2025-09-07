@@ -63,6 +63,20 @@ exports.createReferral = async (req, res) => {
       bonus: typeof bonus === 'number' ? bonus : 0,
       message: message || "",
     });
+    console.log("Referral creation data:", {
+      recruiter: req.user.id,
+      job: jobId,
+      admin: adminId,
+      candidateName,
+      candidateEmail: email || "",
+      candidatePhone: phone || "",
+      cvFileName: req.file?.filename || "",
+      linkedin: linkedin || "",
+      portfolio: portfolio || "",
+      suitability: suitability || "",
+      bonus: typeof bonus === 'number' ? bonus : 0,
+      message: message || "",
+    });
 
     const referral = await Referral.create({
       recruiter: req.user.id,
@@ -78,6 +92,10 @@ exports.createReferral = async (req, res) => {
       bonus: typeof bonus === 'number' ? bonus : 0,
       message: message || "",
     });
+
+    if (!referral.admin) {
+      console.error("Referral missing admin field:", referral);
+    }
 
     console.log("Referral created successfully:", referral);
 
@@ -111,6 +129,9 @@ exports.getReferrals = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip((Number(page) - 1) * Number(limit))
       .limit(Number(limit));
+
+    const allReferrals = await Referral.find();
+    console.log("All referrals in database:", allReferrals);
 
     console.log("Referrals fetched:", referrals);
 
