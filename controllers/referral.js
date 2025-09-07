@@ -90,11 +90,16 @@ exports.createReferral = async (req, res) => {
 // Admin xem referral gửi tới mình
 exports.getReferrals = async (req, res) => {
   try {
-    const { page = 1, limit = 50, status, jobId, q = "" } = req.query;
+    const { page = 1, limit = 50, status, jobId, q = "", finalized } = req.query;
     const filter = { admin: req.user.id };
+
     if (status) filter.status = status;
     if (jobId) filter.job = jobId;
     if (q) filter.candidateName = { $regex: q, $options: 'i' };
+
+    if (finalized === "true") filter.finalized = true;
+    else if (finalized === "false") filter.finalized = { $ne: true };
+
     const total = await Referral.countDocuments(filter);
     const referrals = await Referral.find(filter)
       .populate("recruiter job")
@@ -107,14 +112,20 @@ exports.getReferrals = async (req, res) => {
   }
 };
 
+
 // Recruiter xem referral mình đã gửi
 exports.getMyReferrals = async (req, res) => {
   try {
-    const { page = 1, limit = 50, status, jobId, q = "" } = req.query;
+    const { page = 1, limit = 50, status, jobId, q = "", finalized } = req.query;
     const filter = { recruiter: req.user.id };
+
     if (status) filter.status = status;
     if (jobId) filter.job = jobId;
     if (q) filter.candidateName = { $regex: q, $options: 'i' };
+
+    if (finalized === "true") filter.finalized = true;
+    else if (finalized === "false") filter.finalized = { $ne: true };
+
     const total = await Referral.countDocuments(filter);
     const referrals = await Referral.find(filter)
       .populate("job")
@@ -126,6 +137,8 @@ exports.getMyReferrals = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 // Admin cập nhật trạng thái/bonus referral
 exports.updateReferralStatus = async (req, res) => {

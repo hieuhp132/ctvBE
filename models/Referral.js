@@ -1,10 +1,7 @@
-const mongoose = require("mongoose");
-
 const referralSchema = new mongoose.Schema(
   {
     recruiter: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     admin: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    // Optional candidate account reference; store candidate fields inline for simplicity
     candidate: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     candidateName: { type: String, required: true },
     candidateEmail: { type: String, default: "" },
@@ -21,9 +18,12 @@ const referralSchema = new mongoose.Schema(
     },
     bonus: { type: Number, default: 0 },
     message: { type: String, default: "" },
+
+    // ✅ New fields
+    finalized: { type: Boolean, default: false },
+    finalizedAt: { type: Date },
   },
   { timestamps: true }
 );
-
 const Referral = mongoose.model("Referral", referralSchema);
 module.exports = Referral;
