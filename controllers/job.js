@@ -4,12 +4,20 @@ exports.saveJob = async (req, res) => {
     const jobId = req.params.id;
     const userId = req.body.userId;
     if (!userId) return res.status(400).json({ message: "Missing userId" });
+
+    console.log("Fetching job with ID:", jobId);
     const job = await Job.findById(jobId);
     if (!job) return res.status(404).json({ message: "Job not found" });
+
+    console.log("Job before update:", job);
     if (!job.savedBy.includes(userId)) job.savedBy.push(userId);
+
     await job.save();
+    console.log("Job after update:", job);
+
     res.json({ success: true, job });
   } catch (err) {
+    console.error("Error in saveJob:", err);
     res.status(400).json({ message: "Save job failed", error: err.message });
   }
 };
