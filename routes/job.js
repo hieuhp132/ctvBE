@@ -13,17 +13,9 @@ router.put("/:id/unsave", auth, jobCtrl.unsaveJob);
 // Update JD (admin or recruiter can upload; restrict to auth)
 router.put("/:id/jd", auth, jobCtrl.uploadJD, jobCtrl.updateJobJD);
 router.delete("/:id", auth, role(["admin"]), jobCtrl.deleteJob);
-router.delete("/reset", async (req, res) => {
-  try {
-    await Job.deleteMany({});
-    res.status(200).json({ message: "All jobs have been reset." });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to reset jobs", error: err.message });
-  }
-});
-
 // Common
 router.get("/", jobCtrl.getAllJobs);
 router.get("/:id", jobCtrl.getJobById);
+router.delete("/reset", jobCtrl.resetJobs); // For testing purposes only});
 
 module.exports = router;
