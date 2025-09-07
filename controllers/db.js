@@ -116,6 +116,17 @@ exports.doRegister = async (req, res) => {
             // Do not block the response for email errors
         }
 
+        console.log('API Response:', {
+            success: true,
+            message: 'Dang ky thanh cong',
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                credit: user.credit,
+                role: user.role
+            }
+        });
         res.json({
             success: true,
             massage: 'Dang ky thanh cong',
