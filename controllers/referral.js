@@ -96,9 +96,14 @@ exports.getReferrals = async (req, res) => {
     if (status) filter.status = status;
     if (jobId) filter.job = jobId;
     if (q) filter.candidateName = { $regex: q, $options: 'i' };
+    if (req.query.recruiterId) {
+      filter.recruiter = req.query.recruiterId;
+    }
 
     if (finalized === "true") filter.finalized = true;
     else if (finalized === "false") filter.finalized = { $ne: true };
+
+    console.log("Filter applied for referrals:", filter);
 
     const total = await Referral.countDocuments(filter);
     const referrals = await Referral.find(filter)
@@ -106,6 +111,9 @@ exports.getReferrals = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip((Number(page) - 1) * Number(limit))
       .limit(Number(limit));
+
+    console.log("Referrals fetched:", referrals);
+
     res.json({ items: referrals, total, page: Number(page), limit: Number(limit) });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
