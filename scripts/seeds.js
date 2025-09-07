@@ -18,30 +18,32 @@ async function seed() {
     await Referral.deleteMany({});
 
     // Tạo password đơn giản cho admin và recruiter
-    const passwordAdmin = "admin123";
+    const adminPassword = "admin123";
 
     const recruiterPassword = "123456";
+    const candidatePassword = "123456";
 
     // === Users ===
     const admin = await User.create({
-      name: "Admin User",
+      name: "Admin",
       email: "admin@example.com",
-      password: passwordAdmin,
+      password: adminPassword,
       role: "admin",
+      credit: 10000,
     });
 
     const recruiter = await User.create({
-      name: "Recruiter User",
-      email: "recruiter@example.com",
+      name: "This Is Me",
+      email: "ctv1@example.com",
       password: recruiterPassword,
       role: "recruiter",
       connections: [admin._id],
     });
 
     const candidate = await User.create({
-      name: "Candidate User",
+      name: "Iam Potential",
       email: "candidate@example.com",
-      password: hashedPassword,
+      password: candidatePassword,
       role: "candidate",
       connections: [recruiter._id, admin._id],
     });
@@ -51,6 +53,7 @@ async function seed() {
       title: "Frontend Developer",
       company: "Tech Corp",
       location: "Remote",
+      salary: "N/A", // Ensure salary is sent
       bonus: 500,
       deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       jobsdetail: {
@@ -64,6 +67,7 @@ async function seed() {
       title: "Backend Developer",
       company: "Data Systems",
       location: "Hà Nội",
+      salary: "1000-1500 USD",
       bonus: 800,
       deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       jobsdetail: {
@@ -84,6 +88,7 @@ async function seed() {
       recruiter: recruiter._id,
       admin: admin._id,
       candidate: candidate._id,
+      candidateName: candidate.name, // Add required candidateName field
       job: job1._id,
       message: "Ứng viên này có kinh nghiệm React và rất phù hợp.",
       status: "submitted",
@@ -91,9 +96,9 @@ async function seed() {
 
     console.log("✅ Seed thành công!");
     console.log("=== Accounts ===");
-    console.log("Admin:", admin.email, password);
-    console.log("Recruiter:", recruiter.email, password);
-    console.log("Candidate:", candidate.email, password);
+    console.log("Admin:", admin.email, adminPassword);
+    console.log("Recruiter:", recruiter.email, recruiterPassword);
+    console.log("Candidate:", candidate.email, candidatePassword);
     console.log("=== Jobs ===");
     console.log("Job1:", job1.title);
     console.log("Job2:", job2.title);

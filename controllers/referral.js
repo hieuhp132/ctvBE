@@ -5,6 +5,14 @@ const User = require("../models/User");
 const multer = require("multer");
 const path = require("path");
 
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+  if (!allowedTypes.includes(file.mimetype)) {
+    return cb(new Error("Invalid file type. Only PDF and Word documents are allowed."), false);
+  }
+  cb(null, true);
+};
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dest = path.join(__dirname, "..", "uploads");
@@ -22,7 +30,7 @@ const storage = multer.diskStorage({
   },
 });
 
-exports.uploadCV = multer({ storage }).single("cv");
+exports.uploadCV = multer({ storage, fileFilter }).single("cv");
 
 // Recruiter gửi referral (submit candidate)
 exports.createReferral = async (req, res) => {
@@ -41,6 +49,21 @@ exports.createReferral = async (req, res) => {
       adminId = adminUser._id;
     }
 
+    console.log("Referral creation request:", {
+      recruiter: req.user.id,
+      job: jobId,
+      admin: adminId,
+      candidateName,
+      candidateEmail: email || "",
+      candidatePhone: phone || "",
+      cvFileName: req.file?.filename || "",
+      linkedin: linkedin || "",
+      portfolio: portfolio || "",
+      suitability: suitability || "",
+      bonus: typeof bonus === 'number' ? bonus : 0,
+      message: message || "",
+    });
+
     const referral = await Referral.create({
       recruiter: req.user.id,
       job: jobId,
@@ -55,6 +78,8 @@ exports.createReferral = async (req, res) => {
       bonus: typeof bonus === 'number' ? bonus : 0,
       message: message || "",
     });
+
+    console.log("Referral created successfully:", referral);
 
     res.status(201).json(referral);
   } catch (err) {
