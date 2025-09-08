@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com/api/jobs'; // Replace with your backend URL
-const USER_ID = '68bdcf22131c403154a093e8'; // Replace with a valid user ID
+const USER_ID = '68bea22e4de88dafc3496288'; // Replace with a valid user ID
 
 async function testFetchSavedJobs() {
   console.log('Testing fetchSavedJobs API...');

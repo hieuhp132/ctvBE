@@ -321,3 +321,16 @@ exports.updateReferralFields = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+exports.deleteReferral = async (req, res) => {
+  try {
+    const referral = await Referral.findByIdAndDelete(req.params.id);
+    if (!referral) {
+      return res.status(404).json({ message: 'Referral not found' });
+    }
+    res.json({ message: 'Referral deleted successfully', referral });
+  } catch (err) {
+    console.error('Error deleting referral:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};

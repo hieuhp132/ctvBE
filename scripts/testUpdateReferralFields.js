@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
 const ADMIN_CREDENTIALS = { email: 'admin@example.com', password: 'admin123' }; // Replace with valid admin credentials
-const REFERRAL_ID = '68bea22e4de88dafc3496288'; // Replace with a valid referral ID
+const REFERRAL_ID = '68bedfb70be3e119f1d72f3d'; // Replace with a valid referral ID
 
 async function getAdminToken() {
   console.log('Fetching admin token...');
@@ -23,18 +23,54 @@ async function getAdminToken() {
   }
 }
 
+async function testGetAdminReferrals() {
+  console.log('Testing getAdminReferrals API...');
+  try {
+    const adminToken = await getAdminToken();
+    const response = await axios.get(`${BASE_URL}/api/referrals`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+      },
+    });
+    console.log('Get admin referrals response:', response.data);
+  } catch (error) {
+    console.error('Error during API testing:', error.response?.data || error.message);
+  } finally {
+    console.log('Finished testing getAdminReferrals API');
+  }
+}
+
+async function testDeleteReferral() {
+  console.log('Testing deleteReferral API...');
+
+  try {
+    const adminToken = await getAdminToken();
+    const response = await axios.delete(`${BASE_URL}/api/referrals/${REFERRAL_ID}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+      },
+    });
+    console.log('Delete referral response:', response.data);
+  } catch (error) {
+    console.error('Error during API testing:', error.response?.data || error.message);
+  }
+}
+
 async function testUpdateReferralFields() {
   console.log('Testing updateReferralFields API...');
 
+  const rId = '68bdcf23131c403154a093f4'; // Replace with a valid referral ID
   const updates = {
-    candidateEmail: 'updatedemail@example.com',
-    candidatePhone: '+1234567890',
+    candidateEmail: 'anything@example.com',
+    candidatePhone: '+12345671890',
   };
 
   try {
     const adminToken = await getAdminToken();
 
-    const response = await axios.put(`${BASE_URL}/referrals/${REFERRAL_ID}/fields`, updates, {
+    const response = await axios.put(`${BASE_URL}/api/referrals/${rId}/fields`, updates, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminToken}`,
@@ -46,4 +82,6 @@ async function testUpdateReferralFields() {
   }
 }
 
+testDeleteReferral();
 testUpdateReferralFields();
+testGetAdminReferrals();

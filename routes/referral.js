@@ -22,4 +22,7 @@ router.put("/:id/finalize", auth, role(["admin"]), referralCtrl.finalizeReferral
 // Admin cập nhật các trường bổ sung của referral
 router.put("/:id/fields", auth, role(["admin"]), referralCtrl.updateReferralFields);
 
+// Admin deletes a referral by ID
+router.delete('/:id', auth, role(['admin']), referralCtrl.deleteReferral);
+
 module.exports = router;
