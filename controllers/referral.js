@@ -291,7 +291,6 @@ exports.updateReferralFields = async (req, res) => {
       "message",
       "linkedin",
       "portfolio",
-      "cvFileName",
       "candidatePhone",
       "candidateEmail",
     ];
