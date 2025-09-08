@@ -281,3 +281,28 @@ exports.finalizeReferral = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+// Handle file uploads for candidate submissions
+exports.uploadSubmissionCV = multer({ storage, fileFilter }).single("cvFile");
+
+exports.createSubmission = async (req, res) => {
+  try {
+    const { candidateName, jobId, linkedin, ctvId, bonus } = req.body;
+    const cvFile = req.file ? req.file.filename : null;
+
+    // Save submission details to the database
+    const submission = await createSubmission({
+      candidateName,
+      jobId,
+      linkedin,
+      ctvId,
+      bonus,
+      cvFile,
+    });
+
+    res.status(201).json(submission);
+  } catch (error) {
+    console.error('Error creating submission:', error);
+    res.status(500).json({ error: 'Failed to create submission' });
+  }
+};
