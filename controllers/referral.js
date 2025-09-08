@@ -313,11 +313,10 @@ exports.updateReferralFields = async (req, res) => {
       }
     });
 
-    await referral.save();
+    const savedReferral = await referral.save();
+    console.log("Saved referral to database:", savedReferral);
 
-    console.log("Updated referral:", referral);
-
-    res.json({ message: "Referral fields updated successfully", referral });
+    res.json({ message: "Referral fields updated successfully", referral: savedReferral });
   } catch (err) {
     console.error("Error updating referral fields:", err);
     res.status(500).json({ message: "Server error", error: err.message });
