@@ -297,20 +297,29 @@ exports.updateReferralFields = async (req, res) => {
     ];
     const updates = req.body;
 
+    console.log("Incoming updates:", updates);
+
     const referral = await Referral.findById(req.params.id);
-    if (!referral) return res.status(404).json({ message: "Referral not found" });
+    if (!referral) {
+      console.error("Referral not found for ID:", req.params.id);
+      return res.status(404).json({ message: "Referral not found" });
+    }
 
     // Update only allowed fields
     Object.keys(updates).forEach((key) => {
       if (allowedFields.includes(key)) {
         referral[key] = updates[key];
+        console.log(`Updated field ${key} to value ${updates[key]}`);
       }
     });
 
     await referral.save();
 
+    console.log("Updated referral:", referral);
+
     res.json({ message: "Referral fields updated successfully", referral });
   } catch (err) {
+    console.error("Error updating referral fields:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
