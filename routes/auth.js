@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getProfile, getAllJobs, getJobById, createJob, updateJob, deleteJob, login} = require('../controllers/auth');
+const {getProfile, getAllJobs, getJobById, createJob, updateJob, deleteJob, login, updateBasicInfo} = require('../controllers/auth');
 const authMiddleWare = require('../middlewares/auth');
 
 router.get('/user/profile', authMiddleWare, getProfile);
@@ -11,8 +11,7 @@ router.get("/user/:id", authMiddleWare, getJobById);
 router.post("/user/create", authMiddleWare, createJob);
 router.put("/user/:id", authMiddleWare, updateJob);
 router.delete("/user/:id", authMiddleWare, deleteJob);
+router.put('/user/updateBasicInfo', authMiddleWare, updateBasicInfo);
 
-// Route: /api/auth/login
-router.post('/auth/login', login);
 
 module.exports = router;
