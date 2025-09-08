@@ -74,7 +74,7 @@ exports.updateJobJD = async (req, res) => {
  exports.getJobById = async (req, res) => { try { const job = await Job.findById(req.params.id); if (!job) return res.status(404).json({ message: "Job not found" }); res.json(job); } catch (err) { res.status(500).json({ message: "Server error" }); } };
  exports.getAllJobs = async (req, res) => { 
   try { 
-    const { page = 1, limit = 50, q = "" } = req.query;
+    const { page = 1, limit = 50, q = "", savedBy } = req.query;
     const query = {};
     if (q) {
       query.$or = [
@@ -82,6 +82,9 @@ exports.updateJobJD = async (req, res) => {
         { company: { $regex: q, $options: 'i' } },
         { location: { $regex: q, $options: 'i' } },
       ];
+    }
+    if (savedBy) {
+      query.savedBy = savedBy;
     }
     const total = await Job.countDocuments(query);
     const jobs = await Job.find(query)
