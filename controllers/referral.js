@@ -1,7 +1,6 @@
 const Referral = require("../models/Referral");
 const Job = require("../models/Job");
 const User = require("../models/User");
-const Submission = require("../models/Submission");
 
 const multer = require("multer");
 const path = require("path");
@@ -283,52 +282,35 @@ exports.finalizeReferral = async (req, res) => {
   }
 };
 
-// Handle file uploads for candidate submissions
-exports.uploadSubmissionCV = multer({ storage, fileFilter }).single("cvFile");
-
-exports.createSubmission = async (req, res) => {
+// Admin cập nhật các trường bổ sung của referral
+exports.updateReferralFields = async (req, res) => {
   try {
-    const { candidateName, jobId, linkedin, ctvId, bonus } = req.body;
-    const cvFile = req.file ? req.file.filename : null;
+    const allowedFields = [
+      "finalized",
+      "finalizedAt",
+      "message",
+      "linkedin",
+      "portfolio",
+      "cvFileName",
+      "candidatePhone",
+      "candidateEmail",
+    ];
+    const updates = req.body;
 
-    // Save submission details to the database
-    const submission = await createSubmission({
-      candidateName,
-      jobId,
-      linkedin,
-      ctvId,
-      bonus,
-      cvFile,
+    const referral = await Referral.findById(req.params.id);
+    if (!referral) return res.status(404).json({ message: "Referral not found" });
+
+    // Update only allowed fields
+    Object.keys(updates).forEach((key) => {
+      if (allowedFields.includes(key)) {
+        referral[key] = updates[key];
+      }
     });
 
-    res.status(201).json(submission);
-  } catch (error) {
-    console.error('Error creating submission:', error);
-    res.status(500).json({ error: 'Failed to create submission' });
-  }
-};
+    await referral.save();
 
-// Update specific fields of a submission
-exports.updateSubmission = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updates = req.body; // Expecting key-value pairs for fields to update
-
-    // Validate updates
-    if (!id || !updates || typeof updates !== 'object') {
-      return res.status(400).json({ error: 'Invalid request data' });
-    }
-
-    // Update the submission in the database
-    const updatedSubmission = await Submission.findByIdAndUpdate(id, updates, { new: true });
-
-    if (!updatedSubmission) {
-      return res.status(404).json({ error: 'Submission not found' });
-    }
-
-    res.status(200).json(updatedSubmission);
-  } catch (error) {
-    console.error('Error updating submission:', error);
-    res.status(500).json({ error: 'Failed to update submission' });
+    res.json({ message: "Referral fields updated successfully", referral });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };

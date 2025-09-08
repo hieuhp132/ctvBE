@@ -19,4 +19,7 @@ router.put("/:id", auth, role(["admin"]), referralCtrl.updateReferralStatus);
 // Admin chốt deal (onboard/reject)
 router.put("/:id/finalize", auth, role(["admin"]), referralCtrl.finalizeReferral);
 
+// Admin cập nhật các trường bổ sung của referral
+router.put("/:id/fields", auth, role(["admin"]), referralCtrl.updateReferralFields);
+
 module.exports = router;
