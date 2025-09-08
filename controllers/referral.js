@@ -1,6 +1,7 @@
 const Referral = require("../models/Referral");
 const Job = require("../models/Job");
 const User = require("../models/User");
+const Submission = require("../models/Submission");
 
 const multer = require("multer");
 const path = require("path");
@@ -304,5 +305,30 @@ exports.createSubmission = async (req, res) => {
   } catch (error) {
     console.error('Error creating submission:', error);
     res.status(500).json({ error: 'Failed to create submission' });
+  }
+};
+
+// Update specific fields of a submission
+exports.updateSubmission = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body; // Expecting key-value pairs for fields to update
+
+    // Validate updates
+    if (!id || !updates || typeof updates !== 'object') {
+      return res.status(400).json({ error: 'Invalid request data' });
+    }
+
+    // Update the submission in the database
+    const updatedSubmission = await Submission.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!updatedSubmission) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+
+    res.status(200).json(updatedSubmission);
+  } catch (error) {
+    console.error('Error updating submission:', error);
+    res.status(500).json({ error: 'Failed to update submission' });
   }
 };
