@@ -22,27 +22,25 @@ async function getAdminToken() {
   }
 }
 
-async function testUpdateBasicInfo() {
-  console.log('Testing updateBasicInfo API...');
+async function testUpdateJobsById() {
+    console.log('Testing updateBasicInfo API...');
+    const jobId = '64f1c4e2b4dcbf001c8e4a2b'; // Replace with a valid job ID
 
-  const updates = {
-    name: 'Updated Admin Name',
-    email: 'updatedadmin@example.com',
-  };
+    const updates = {
+        keywords: ['Future Leader', 'Operating System', 'Team Management'],
+    };
 
-  try {
-    const adminToken = await getAdminToken();
+    try {        const adminToken = await getAdminToken();
 
-    const response = await axios.put(`${BASE_URL}/api/auth/user/updateBasicInfo`, updates, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminToken}`,
-      },
-    });
-    console.log('Update basic info response:', response.data);
-  } catch (error) {
-    console.error('Error during API testing:', error.response?.data || error.message);
-  }
+        const response = await axios.put(`${BASE_URL}/api/jobs/${jobId}`, updates, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminToken}`,
+            },
+        });
+        console.log('Update job by ID response:', response.data);
+    } catch (e) {
+        
+    }
+
 }
-
-testUpdateBasicInfo();

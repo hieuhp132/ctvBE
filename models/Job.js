@@ -12,6 +12,7 @@ const jobSchema = new mongoose.Schema({
   vacancies: { type: Number, default: 0 },
   applicants: { type: Number, default: 0 },
   status: { type: String, default: "Active" },
+  keywords: [{ type: String }],
   jobsdetail: {
     description: { type: String, default: "" },
     requirement: { type: String, default: "" },
