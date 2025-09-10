@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
 const ADMIN_CREDENTIALS = { email: 'updatedadmin@example.com', password: 'admin123' }; // Replace with valid admin credentials
-const RECRUITER_CREDENTIALS = { email: 'ctv1@exampe.com', password: '123456789' }; // Replace with valid recruiter credentials
+const RECRUITER_CREDENTIALS = { email: 'ctv1@exampe.com', password: 'newpassword123' }; // Replace with valid recruiter credentials
 
 async function getAdminToken() {
   console.log('Fetching admin token...');
@@ -106,4 +106,4 @@ async function testUpdateBasicInfoAdmin() {
 
 //testUpdateBasicInfoAdmin();
 //testUpdateBasicInfoRecruiter();
-testResetPassword
+testResetPassword();

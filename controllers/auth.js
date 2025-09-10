@@ -79,10 +79,8 @@ exports.updateBasicInfo = async (req, res) => {
     user.email = email || user.email;
 
     if (password) {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
+      user.password = password;
     }
-
     await user.save();
 
     res.json({ success: true, message: "Basic information updated successfully", user });
