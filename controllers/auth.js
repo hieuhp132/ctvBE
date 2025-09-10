@@ -69,7 +69,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateBasicInfo = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, newPassword } = req.body;
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -78,8 +78,8 @@ exports.updateBasicInfo = async (req, res) => {
     user.name = name || user.name;
     user.email = email || user.email;
 
-    if (password) {
-      user.password = password;
+    if (newPassword) {
+      user.password = newPassword;
     }
     await user.save();
 
