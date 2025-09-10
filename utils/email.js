@@ -25,13 +25,12 @@ const sendEmail = async (to, subject, html) => {
 
 function sendWelcomeEmail(name, recipientEmail, verificationLink) {
   const subject = "Welcome to Ant-tech Asia 🚀";
+  const verificationButton = `<a href="${verificationLink}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 5px;">Verify Email</a>`;
   const htmlContent = `
     <h1>Welcome to Ant-tech Asia 🚀</h1>
     <p>Hi ${name},</p>
     <p>Thank you for registering at Ant-tech Asia.<br>Your account has been successfully created.</p>
-    <p>👉 Next step: Please verify your email address to start using our services.</p>
-    <a href="${verificationLink}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Verify Email</a>
-    <p>If you didn’t create this account, please ignore this email.</p>
+    <p>Now you can log in our system. Enjoy !</p>
     <p>Best regards,<br>Ant-tech Asia Team</p>
   `;
 
