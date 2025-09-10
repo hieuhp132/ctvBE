@@ -106,5 +106,5 @@ async function testUpdateBasicInfoAdmin() {
 }
 
 //testUpdateBasicInfoAdmin();
-//testResetPassword();
-testUpdateBasicInfoRecruiter();
+testResetPassword();
+//testUpdateBasicInfoRecruiter();
