@@ -69,7 +69,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateBasicInfo = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -77,6 +77,12 @@ exports.updateBasicInfo = async (req, res) => {
 
     user.name = name || user.name;
     user.email = email || user.email;
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
     await user.save();
 
     res.json({ success: true, message: "Basic information updated successfully", user });

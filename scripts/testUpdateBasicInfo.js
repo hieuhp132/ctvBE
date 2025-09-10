@@ -47,8 +47,8 @@ async function testUpdateBasicInfoRecruiter(params) {
     console.log('Testing updateBasicInfo API...');
 
     const updates = {
-        name: 'Me As Rcr',
-        email: 'ctv1@example.com',
+        name: 'Me As !Rcr!',
+        email: 'ctv1@gmail.com',
         password: '123456789',
       };
 
