@@ -1,6 +1,6 @@
 const axios = require('axios');
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
-const RECRUITER_CREDENTIALS = { email: 'ctv1@example.com', password: '123456' }; // Replace with valid recruiter credentials
+const RECRUITER_CREDENTIALS = { email: 'ctv1@example.com', password: '123456789' }; // Replace with valid recruiter credentials
 async function getRecruiterToken() {
   console.log('Fetching recruiter token...');
   
@@ -20,6 +20,24 @@ async function getRecruiterToken() {
     throw new Error('Failed to fetch recruiter token');
   } 
 }
+
+async function testGetUserInfo() {
+
+    console.log('Testing getProfile API...');
+    const token = await getRecruiterToken();
+    try {
+        const response = await axios.get(`${BASE_URL}/api/auth/user/profile`, {
+            headers: { 
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log('Get profile response:', response.data);
+    } catch (error) {
+        console.error('Error during API testing:', error.response?.data || error.message);
+    }
+}
+
 async function testGetUserInfoById() {
 
     console.log('Testing getProfile API...');
@@ -51,4 +69,5 @@ async function testGetUserPasswordById() {
         console.error('Error during API testing:', error.response?.data || error.message);
     }
 }
-testGetUserPasswordById();
+//testGetUserPasswordById();
+testGetUserInfo();

@@ -3,6 +3,8 @@ const router = express.Router();
 const {getProfile, getAllJobs, getJobById, createJob, updateJob, deleteJob, login, updateBasicInfo, changePassword} = require('../controllers/auth');
 const authMiddleWare = require('../middlewares/auth');
 
+//Route api/auth
+
 router.put('/user/updateBasicInfo', authMiddleWare, updateBasicInfo);
 router.get('/user/profile', authMiddleWare, getProfile);
 router.put('/user/change-password', authMiddleWare, changePassword);
