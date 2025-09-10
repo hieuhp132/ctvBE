@@ -36,5 +36,19 @@ async function testGetUserInfoById() {
     } 
         
 }
+async function testGetUserPasswordById() {
 
-testGetUserInfoById
+    console.log('Get users raw password...');
+    const userId = '68bdcf22131c403154a093ea'; // Replace with a valid user ID
+    try {
+        const response = await axios.get(`${BASE_URL}/db/user/${userId}/raw-password`, {
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log('Get raw password response:', response.data);
+    } catch (error) {
+        console.error('Error during API testing:', error.response?.data || error.message);
+    }
+}
+testGetUserPasswordById();
