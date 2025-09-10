@@ -6,6 +6,25 @@ const { sendEmail } = require('../utils/email');
 const { getWelcomeEmailTemplate } = require('../utils/emailTemplates');
 const { sendWelcomeEmail } = require('../utils/email');
 
+exports.resetPassword = async (req, res) => {
+    try {
+        const { userId, newPassword } = req.body;
+        if (!userId || !newPassword) {
+            return res.status(400).json({ success: false, message: 'userId va newPassword la bat buoc' });
+        }
+        
+        const user = await User.findById(new mongoose.Types.ObjectId(userId));
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        user.password = newPassword;
+        await user.save(); // sẽ gọi pre-save hook để hash password
+
+        res.json({ success: true, message: 'Password has been reset successfully' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
 
 exports.showUsers = async (req, res) => {
     try {
