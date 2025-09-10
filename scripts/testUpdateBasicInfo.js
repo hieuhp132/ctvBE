@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
 const ADMIN_CREDENTIALS = { email: 'updatedadmin@example.com', password: 'admin123' }; // Replace with valid admin credentials
-const RECRUITER_CREDENTIALS = { email: 'ctv1@exampe.com', password: 'newpassword123' }; // Replace with valid recruiter credentials
 
 async function getAdminToken() {
   console.log('Fetching admin token...');
@@ -23,9 +22,25 @@ async function getAdminToken() {
   }
 }
 
+
+async function testResetPassword() {
+  console.log('Testing resetPassword API...');
+  const userId = '68bdcf22131c403154a093ea'; // Replace with a valid user ID
+  const newPassword = '123456'; // Replace with the desired new password
+  try {
+    const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { userId, newPassword }, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    console.log('Reset password response:', response.data);
+  } catch (error) {
+    console.error('Error during API testing:', error.response?.data || error.message);
+  }
+}
+
+const RECRUITER_CREDENTIALS = { email: 'ctv1@example.com', password: '123456789' }; // Replace with valid recruiter credentials
 async function getRecruiterToken() {
   console.log('Fetching recruiter token...');
-
+  
   try {
     const response = await axios.post(`${BASE_URL}/db/users/login`, RECRUITER_CREDENTIALS, {
       headers: { 'Content-Type': 'application/json' },
@@ -43,27 +58,13 @@ async function getRecruiterToken() {
   } 
 }
 
-async function testResetPassword() {
-  console.log('Testing resetPassword API...');
-  const userId = '68bdcf22131c403154a093ea'; // Replace with a valid user ID
-  const newPassword = 'newpassword123'; // Replace with the desired new password
-  try {
-    const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { userId, newPassword }, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-    console.log('Reset password response:', response.data);
-  } catch (error) {
-    console.error('Error during API testing:', error.response?.data || error.message);
-  }
-}
-
 async function testUpdateBasicInfoRecruiter(params) {
     console.log('Testing updateBasicInfo API...');
-
+    
     const updates = {
-        name: 'Me As !Rcr!',
+        name: 'Me As Rcr',
         email: 'ctv1@example.com',
-        password: '123456789',
+        password: '123456',
       };
 
     try {
@@ -105,5 +106,5 @@ async function testUpdateBasicInfoAdmin() {
 }
 
 //testUpdateBasicInfoAdmin();
-//testUpdateBasicInfoRecruiter();
-testResetPassword();
+//testResetPassword();
+testUpdateBasicInfoRecruiter();
