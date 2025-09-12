@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
-const ADMIN_CREDENTIALS = { email: 'updatedadmin@example.com', password: 'admin123' }; // Replace with valid admin credentials
+const ADMIN_CREDENTIALS = { email: 'admin@ant-tech.asia', password: 'admin123' }; // Replace with valid admin credentials
 
 async function getAdminToken() {
   console.log('Fetching admin token...');
@@ -22,13 +22,9 @@ async function getAdminToken() {
   }
 }
 
-async function testUpdateJobsById() {
+async function testUpdateJobsById(jobId, updates) {
     console.log('Testing updateBasicInfo API...');
-    const jobId = '64f1c4e2b4dcbf001c8e4a2b'; // Replace with a valid job ID
-
-    const updates = {
-        keywords: ['Future Leader', 'Operating System', 'Team Management'],
-    };
+    
 
     try {        const adminToken = await getAdminToken();
 
@@ -44,3 +40,6 @@ async function testUpdateJobsById() {
     }
 
 }
+testUpdateJobsById('68c12a639438bea602e7e809', { keywords: ['Future Leader_', 'Operating System', 'Team Management'] });
+testUpdateJobsById('68c12ad69438bea602e7e830', { keywords: ['_Future Leader', 'Operating System', 'Team_Management'] });
+

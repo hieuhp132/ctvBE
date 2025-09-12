@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
-const ADMIN_CREDENTIALS = { email: 'admin@example.com', password: 'admin123' }; // Replace with valid admin credentials
+const ADMIN_CREDENTIALS = { email: 'admin@ant-tech.asia', password: 'admin123' }; // Replace with valid admin credentials
 const REFERRAL_ID = '68bedfb70be3e119f1d72f3d'; // Replace with a valid referral ID
 
 async function getAdminToken() {
@@ -82,6 +82,6 @@ async function testUpdateReferralFields() {
   }
 }
 
-testDeleteReferral();
-testUpdateReferralFields();
+//testDeleteReferral();
+//testUpdateReferralFields();
 testGetAdminReferrals();
