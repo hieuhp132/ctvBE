@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const testDeleteUser = async () => {
-  const userId = '68c410bcdec030fc195d55b4'; // Replace with a valid user ID from your database
+  const userId = '68c42513b8ce3ba4c1d520fc'; // Replace with a valid user ID from your database
   const baseUrl = 'https://ctvbe.onrender.com'; // Replace with your server's base URL
 
   try {

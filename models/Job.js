@@ -5,7 +5,7 @@ const jobSchema = new mongoose.Schema({
   salary: { type: String, default: "N/A" },
   company: { type: String, required: true },
   location: { type: String, required: true },
-  bonus: { type: Number, default: 0 },
+  bonus: { type: String},
   deadline: { type: Date },
   rewardCandidateUSD: { type: Number, default: 0 },
   rewardInterviewUSD: { type: Number, default: 0 },

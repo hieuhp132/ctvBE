@@ -4,6 +4,8 @@ const auth = require("../middlewares/auth");
 const role = require("../middlewares/role");
 const jobCtrl = require("../controllers/job");
 
+// Route /api/jobs
+
 // Admin CRUD Job
 router.post("/", auth, role(["admin"]), jobCtrl.createJob);
 router.put("/:id", auth, role(["admin"]), jobCtrl.updateJob);
