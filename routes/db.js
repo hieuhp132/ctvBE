@@ -8,6 +8,5 @@ router.get("/users/reset", resetUsers);
 router.post("/users/login", doLogin);
 router.post("/users/signup", doRegister);
 router.post("/users/resetPassword", resetPassword);
-router.get("/user/:userId/raw-password", getRawPassword);
 router.delete("/user/:userId/remove", removeUser); // For testing purposes only
 module.exports = router;
