@@ -84,3 +84,29 @@ exports.resetJobs = async (req, res) => {
     res.status(500).json({ message: "Failed to reset jobs", error: err.message });
   }
 };
+
+exports.updateJobJD = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const { jdFileName, jdUrl, jdLink } = req.body; // lấy dữ liệu file từ body
+
+    if (!jdFileName) {
+      return res.status(400).json({ message: "Missing JD file info" });
+    }
+
+    const updateData = {};
+    if (jdFileName) updateData.jdFileName = jdFileName;
+    if (jdUrl) updateData.jdUrl = jdUrl;
+    if (jdLink) updateData.jdLink = jdLink;
+
+    const updatedJob = await Job.findByIdAndUpdate(jobId, updateData, { new: true });
+
+    if (!updatedJob) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.json(updatedJob);
+  } catch (err) {
+    res.status(400).json({ message: "Update JD failed", error: err.message });
+  }
+};

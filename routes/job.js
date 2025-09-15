@@ -14,6 +14,9 @@ router.put("/:id/save", auth, jobCtrl.saveJob);
 router.put("/:id/unsave", auth, jobCtrl.unsaveJob);
 // Update JD (admin or recruiter can upload; restrict to auth)
 router.delete("/:id", auth, role(["admin"]), jobCtrl.deleteJob);
+// Cập nhật JD file (cho admin hoặc recruiter được phép)
+router.patch("/:id/jd", auth, role(["admin", "recruiter"]), jobCtrl.updateJobJD);
+
 // Common
 router.get("/", jobCtrl.getAllJobs);
 router.get("/:id", jobCtrl.getJobById);
