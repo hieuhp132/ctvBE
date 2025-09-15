@@ -45,7 +45,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(express.json());
-app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 app.use("/db", require("./routes/db"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/jobs", require("./routes/job"));        // ✅ thêm

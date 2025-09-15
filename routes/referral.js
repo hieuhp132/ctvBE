@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
 const role = require("../middlewares/role");
+const cv = require("../middlewares/cv");
 const referralCtrl = require("../controllers/referral");
 
 // Recruiter gửi referral (hỗ trợ upload CV multipart field "cv")
-router.post("/", auth, role(["recruiter"]), referralCtrl.uploadCV, referralCtrl.createReferral);
+router.post("/", auth, role(["recruiter"]), cv.uploadCV, referralCtrl.createReferral);
 
 // Admin xem referral
 router.get("/", auth, role(["admin"]), referralCtrl.getReferrals);
@@ -24,5 +25,8 @@ router.put("/:id/fields", auth, role(["admin"]), referralCtrl.updateReferralFiel
 
 // Admin deletes a referral by ID
 router.delete('/:id', auth, role(['admin']), referralCtrl.deleteReferral);
+
+// Download CV (Admin + Recruiter đều được phép xem)
+router.get("/:id/download", auth, role(["admin", "recruiter"]), referralCtrl.downloadCV);
 
 module.exports = router;
