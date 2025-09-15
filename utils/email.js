@@ -61,19 +61,19 @@ function sendLoginNotification(name, recipientEmail, time, location, device) {
   return sendEmail(recipientEmail, subject, htmlContent);
 }
 
-function sendResetPasswordEmail(name, recipientEmail, resetLink) {
-  const subject = "Reset your Ant-tech Asia password";
+function sendResetPasswordEmail(name, recipientEmail, newPassword) {
+  const subject = "🔐 Your new password for Ant-tech Asia";
   const htmlContent = `
-    <h1>Reset your Ant-tech Asia password</h1>
+    <h1>Here is your new password</h1>
     <p>Hi ${name},</p>
-    <p>We received a request to reset your password.<br>To create a new password, please click the button below:</p>
-    <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Reset Password</a>
-    <p>If you didn’t request this, simply ignore this email.</p>
-    <p>Stay secure,<br>Ant-tech Asia Support</p>
+    <p>We have generated a new password for your account:</p>
+    <p><strong>${newPassword}</strong></p>
+    <p>— Ant-tech Asia Support</p>
   `;
 
   return sendEmail(recipientEmail, subject, htmlContent);
 }
+
 
 function sendApplicationConfirmationEmail(candidateName, recipientEmail, jobTitle) {
   const subject = "Your application has been received – Ant-tech Asia";

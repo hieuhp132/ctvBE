@@ -2,29 +2,25 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { sendEmail } = require('../utils/email');
-const { getWelcomeEmailTemplate } = require('../utils/emailTemplates');
-const { sendWelcomeEmail } = require('../utils/email');
+const { sendWelcomeEmail, sendResetPasswordEmail } = require('../utils/email');
 
-exports.resetPassword = async (req, res) => {
-    try {
-        const { userId, newPassword } = req.body;
-        if (!userId || !newPassword) {
-            return res.status(400).json({ success: false, message: 'userId va newPassword la bat buoc' });
-        }
-        
-        const user = await User.findById(new mongoose.Types.ObjectId(userId));
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-        user.password = newPassword;
-        await user.save(); // sẽ gọi pre-save hook để hash password
+router.post("/reset-password", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email is required" });
 
-        res.json({ success: true, message: 'Password has been reset successfully' });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
-    }
-};
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  // Tạo mật khẩu mới
+  const newPassword = "123456";
+  user.password = newPassword;
+  await user.save();
+
+  await sendResetPasswordEmail(user.name || "User", email, newPassword);
+
+  res.json({ message: "New password sent to your email" });
+});
+
 
 exports.showUsers = async (req, res) => {
     try {
