@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { sendWelcomeEmail, sendResetPasswordEmail } = require('../utils/email');
 
-router.post("/reset-password", async (req, res) => {
+exports.resetPassword = async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ message: "Email is required" });
 
@@ -19,7 +19,7 @@ router.post("/reset-password", async (req, res) => {
   await sendResetPasswordEmail(user.name || "User", email, newPassword);
 
   res.json({ message: "New password sent to your email" });
-});
+};
 
 
 exports.showUsers = async (req, res) => {
