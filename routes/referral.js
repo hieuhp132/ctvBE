@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/auth");
 const role = require("../middlewares/role");
-const cv = require("../middlewares/cv");
+const uploadCV = require("../middlewares/cv");
 const referralCtrl = require("../controllers/referral");
 
 // Recruiter gửi referral (hỗ trợ upload CV multipart field "cv")
-router.post("/", auth, role(["recruiter"]), cv.uploadCV, referralCtrl.createReferral);
+router.post("/", auth, role(["recruiter"]), uploadCV, referralCtrl.createReferral);
 
 // Admin xem referral
 router.get("/", auth, role(["admin"]), referralCtrl.getReferrals);
