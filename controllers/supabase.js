@@ -47,6 +47,7 @@ exports.downloadFile = async (req, res) => {
     try {
         
         const {fileName} = req.params;
+        console.log('Request params:', req.params);
         if(!fileName) return res.status(400).json({ error: 'Filename is required' });
 
         const { data, error } = await supabase.storage.from(bucketName).download(fileName);

@@ -35,4 +35,61 @@ const testUploadFile = async () => {
   }
 };
 
-testUploadFile();
+const testDeleteFile = async (filename) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/spb/delete/${encodeURIComponent(filename)}`);
+      console.log('✅ Delete successful:', response.data);
+    } catch (error) {
+      if (error.response) {
+        console.error('❌ Delete failed:', error.response.status, error.response.data);
+      } else {
+        console.error('❌ Delete error:', error.message);
+      }
+    }
+  };
+  
+  testDeleteFile('1757961960522_Sr. Sales Executive- Remote (United States).docx');
+  
+
+const testDownloadFile = async (fileName, saveAs) => {
+    try {
+      const response = await axios.get(`${baseUrl}/spb/download/${encodeURIComponent(fileName)}`, {
+        responseType: 'stream',
+      });
+  
+      const filePath = path.resolve(__dirname, saveAs);
+      const writer = fs.createWriteStream(filePath);
+  
+      response.data.pipe(writer);
+  
+      writer.on('finish', () => {
+        console.log(`✅ Downloaded and saved file as ${saveAs}`);
+      });
+  
+      writer.on('error', (err) => {
+        console.error('❌ Error writing file:', err);
+      });
+    } catch (error) {
+      if (error.response) {
+        console.error('❌ Download failed:', error.response.status, error.response.data);
+      } else {
+        console.error('❌ Download error:', error.message);
+      }
+    }
+};
+
+const testListFiles = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/spb/list`);
+      console.log('✅ List of files:', response.data.files);
+    } catch (error) {
+      if (error.response) {
+        console.error('❌ List files failed:', error.response.status, error.response.data);
+      } else {
+        console.error('❌ List files error:', error.message);
+      }
+    }
+  };
+  
+//testListFiles();
+//testUploadFile();
