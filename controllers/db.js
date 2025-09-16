@@ -124,7 +124,7 @@ exports.doRegister = async (req, res) => {
     
         // Send welcome email
         try {
-            await sendWelcomeEmail(user.name, user.email, `${process.env.FRONTEND_URL}/verify-email`);
+            await sendWelcomeEmail(user.name, user.email);
             console.log(`Welcome email sent to ${user.email}`);
         } catch (emailError) {
             console.error(`Failed to send welcome email to ${user.email}:`, emailError);

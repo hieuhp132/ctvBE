@@ -41,12 +41,12 @@ async function testGetAdminReferrals() {
   }
 }
 
-async function testDeleteReferral() {
+async function testDeleteReferralById(id) {
   console.log('Testing deleteReferral API...');
 
   try {
     const adminToken = await getAdminToken();
-    const response = await axios.delete(`${BASE_URL}/api/referrals/${REFERRAL_ID}`, {
+    const response = await axios.delete(`${BASE_URL}/api/referrals/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminToken}`,
@@ -57,6 +57,7 @@ async function testDeleteReferral() {
     console.error('Error during API testing:', error.response?.data || error.message);
   }
 }
+
 
 async function testUpdateReferralFields() {
   console.log('Testing updateReferralFields API...');
@@ -84,4 +85,5 @@ async function testUpdateReferralFields() {
 
 //testDeleteReferral();
 //testUpdateReferralFields();
+testDeleteReferralById('68bdcf23131c403154a093f4');
 testGetAdminReferrals();

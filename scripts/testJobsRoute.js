@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { headers } = require('../utils/supabaseClient');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Replace with your backend URL
 const ADMIN_CREDENTIALS = { email: 'admin@ant-tech.asia', password: 'admin123' }; // Replace with valid admin credentials
@@ -25,7 +26,6 @@ async function getAdminToken() {
 async function testUpdateJobsById(jobId, updates) {
     console.log('Testing updateBasicInfo API...');
     
-
     try {        const adminToken = await getAdminToken();
 
         const response = await axios.put(`${BASE_URL}/api/jobs/${jobId}`, updates, {
@@ -40,6 +40,26 @@ async function testUpdateJobsById(jobId, updates) {
     }
 
 }
-testUpdateJobsById('68c12a639438bea602e7e809', { keywords: ['Future Leader_', 'Operating System', 'Team Management'] });
-testUpdateJobsById('68c12ad69438bea602e7e830', { keywords: ['_Future Leader', 'Operating System', 'Team_Management'] });
 
+async function testUpdateJobJD(id, jdlink) {
+    console.log('Testing update job jd');
+    
+    try {
+      const token = await getAdminToken();
+      const response = await axios.patch(`${BASE_URL}/api/jobs/${id}/jd`,
+        { jdLink: jdlink },
+        {
+          headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      console.log('Updated jd', response.data);
+    } catch(err) {
+
+    }
+}
+
+//testUpdateJobsById('68c12a639438bea602e7e809', { keywords: ['Future Leader_', 'Operating System', 'Team Management'] });
+//testUpdateJobsById('68c12ad69438bea602e7e830', { keywords: ['_Future Leader', 'Operating System', 'Team_Management'] });
+testUpdateJobJD('68c6fa36b5a9f416b212abd0','https://test.exapmle.com');
