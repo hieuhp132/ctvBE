@@ -46,6 +46,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.json());
 app.use("/db", require("./routes/db"));
+app.use("/spb", require("./routes/supabase"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/jobs", require("./routes/job"));        // ✅ thêm
 app.use("/api/referrals", require("./routes/referral")); // ✅ thêm
