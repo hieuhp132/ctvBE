@@ -46,9 +46,10 @@ const testDeleteFile = async (filename) => {
         console.error('❌ Delete error:', error.message);
       }
     }
-  };
-  
-  testDeleteFile('1757961960522_Sr. Sales Executive- Remote (United States).docx');
+};
+
+const filename = 'jd_1757993638655_testfile.pdf';
+testDeleteFile(filename);
   
 
 const testDownloadFile = async (fileName, saveAs) => {

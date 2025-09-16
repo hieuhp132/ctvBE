@@ -47,12 +47,11 @@ exports.downloadFile = async (req, res) => {
     try {
         
         const {filename} = req.params;
-        console.log('Request params:', req.params);
         if(!filename) return res.status(400).json({ error: 'filename is required' });
-
+        
         const { data, error } = await supabase.storage.from(bucketName).download(filename);
         if(error) return res.status(500).json({ error: error.message });
-
+        
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
         return data.pipe(res);
@@ -62,9 +61,10 @@ exports.downloadFile = async (req, res) => {
 }
 
 exports.deleteFile = async (req, res) => {
-
+    
     try {
         const { filename } = req.params;
+        console.log('Request params:', req.params);
         if(!filename) return res.status(400).json({ error: 'Filename is required' });
 
         const {data, error} = await supabase.storage.from(bucketName).remove([filename]);
