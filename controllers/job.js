@@ -87,25 +87,19 @@ exports.resetJobs = async (req, res) => {
 
 exports.updateJobJD = async (req, res) => {
   try {
-    const jobId = req.params.id;
-    const { jdFileName, jdUrl, jdLink } = req.body; // lấy dữ liệu file từ body
+    const {id} = req.params;
+    const jdLink = typeof req.body.jdLink === 'string' ? req.body.jdLink : undefined;
+    const jdFileName = req.file ? req.file.filename : undefined;
+    const clearFile = req.body.clearFile === 'true';
+    const update = {};
+    if(jdLink !== undefined) update.jdLink = jdLink;
+    if(jdFileName !== undefined) update.jdFileName = jdFileName;
+    if(clearFile) update.jdFileName = '';
 
-    if (!jdFileName) {
-      return res.status(400).json({ message: "Missing JD file info" });
-    }
-
-    const updateData = {};
-    if (jdFileName) updateData.jdFileName = jdFileName;
-    if (jdUrl) updateData.jdUrl = jdUrl;
-    if (jdLink) updateData.jdLink = jdLink;
-
-    const updatedJob = await Job.findByIdAndUpdate(jobId, updateData, { new: true });
-
-    if (!updatedJob) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-
-    res.json(updatedJob);
+    if(jdFileName && jdLink === undefined) update.jdLink = jdFileName;
+    const job = await Job.findByIdAndUpdate(id, update, { new: true });
+    if(!job) return res.status(404).json({ message: 'Job not found' });
+    res.json(job);
   } catch (err) {
     res.status(400).json({ message: "Update JD failed", error: err.message });
   }

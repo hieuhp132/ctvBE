@@ -64,7 +64,7 @@ exports.deleteFile = async (req, res) => {
     
     try {
         const { filename } = req.params;
-        console.log('Request params:', req.params);
+        console.log('Request params:', filename);
         if(!filename) return res.status(400).json({ error: 'Filename is required' });
 
         const {data, error} = await supabase.storage.from(bucketName).remove([filename]);

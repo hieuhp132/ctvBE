@@ -37,7 +37,7 @@ const testUploadFile = async () => {
 
 const testDeleteFile = async (filename) => {
     try {
-      const response = await axios.delete(`${baseUrl}/spb/delete/${encodeURIComponent(filename)}`);
+      const response = await axios.delete(`${baseUrl}/spb/delete/${filename}`);
       console.log('✅ Delete successful:', response.data);
     } catch (error) {
       if (error.response) {
@@ -48,9 +48,8 @@ const testDeleteFile = async (filename) => {
     }
 };
 
-const filename = 'jd_1757993638655_testfile.pdf';
-testDeleteFile(filename);
-  
+console.log(fileName);
+testDeleteFile(fileName);
 
 const testDownloadFile = async (fileName, saveAs) => {
     try {
