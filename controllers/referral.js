@@ -173,7 +173,7 @@ exports.updateReferralStatus = async (req, res) => {
     } catch {}
 
     // Send email notifications to all related parties
-    const { sendApplicationStatusUpdate } = require('../utils/email');
+    /*const { sendApplicationStatusUpdate } = require('../utils/email');
     try {
       const admin = await User.findById(referral.admin);
       const recruiter = await User.findById(referral.recruiter);
@@ -189,7 +189,7 @@ exports.updateReferralStatus = async (req, res) => {
       }
     } catch (emailError) {
       console.error("Failed to send email notifications:", emailError);
-    }
+    }*/
 
     res.json(referral);
   } catch (err) {
