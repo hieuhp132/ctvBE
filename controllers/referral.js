@@ -38,9 +38,10 @@ exports.createReferral = async (req, res) => {
 
     const job = await Job.findById(jobId);
     if (!job) return res.status(404).json({ message: "Job not found" });
+    /*
     if (new Date(job.deadline) < new Date())
       return res.status(400).json({ message: "Job is closed" });
-
+    */
     if (!adminId) {
       const adminUser = await User.findOne({ role: "admin" }).select("_id");
       if (!adminUser) return res.status(400).json({ message: "No admin available" });
