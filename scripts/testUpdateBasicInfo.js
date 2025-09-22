@@ -95,10 +95,10 @@ async function testUpdateBasicInfoAdmin() {
 async function testResetPassword() {
   console.log('Testing resetPassword API...');
   const userId = '68bdcf22131c403154a093e8'; // Replace with a valid user ID
-  const newPassword = 'admin123'; // Replace with the desired new password
+  const password = 'admin123'; // Replace with the desired new password
   const email = 'admin@ant-tech.asia';
   try {
-    const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { email, newPassword }, {
+    const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { email, password }, {
       headers: { 'Content-Type': 'application/json' },
     });
     console.log('Reset password response:', response.data);

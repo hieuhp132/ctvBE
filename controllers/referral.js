@@ -67,7 +67,6 @@ exports.createReferral = async (req, res) => {
 
     res.status(201).json(referral);
   } catch (err) {
-    console.error("Error in createReferral:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
@@ -88,7 +87,6 @@ exports.getReferrals = async (req, res) => {
     if (finalized === "true") filter.finalized = true;
     else if (finalized === "false") filter.finalized = { $ne: true };
 
-    console.log("Filter applied for referrals:", filter);
 
     const total = await Referral.countDocuments(filter);
     const referrals = await Referral.find(filter)
@@ -98,9 +96,7 @@ exports.getReferrals = async (req, res) => {
       .limit(Number(limit));
 
     const allReferrals = await Referral.find();
-    console.log("All referrals in database:", allReferrals);
 
-    console.log("Referrals fetched:", referrals);
 
     res.json({ items: referrals, total, page: Number(page), limit: Number(limit) });
   } catch (err) {
@@ -152,11 +148,12 @@ exports.updateReferralStatus = async (req, res) => {
     await referral.save();
 
     // Adjust credits & emit notifications when hired/rejected
+   /*
     try {
-      const Notification = require("../models/Notification");
+      //const Notification = require("../models/Notification");
       if (status === 'hired') {
-        await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Hired. Bonus: ${referral.bonus}` });
-        await Notification.create({ role: 'admin', message: `Bonus ${referral.bonus} paid to recruiter ${referral.recruiter}` });
+        //await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Hired. Bonus: ${referral.bonus}` });
+        //await Notification.create({ role: 'admin', message: `Bonus ${referral.bonus} paid to recruiter ${referral.recruiter}` });
         // Adjust admin and recruiter credits in DB
         const admin = await User.findOne({ role: "admin" });
         if (admin) {
@@ -172,6 +169,7 @@ exports.updateReferralStatus = async (req, res) => {
         await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Rejected` });
       }
     } catch {}
+   */
 
     // Send email notifications to all related parties
     /*const { sendApplicationStatusUpdate } = require('../utils/email');
@@ -189,7 +187,6 @@ exports.updateReferralStatus = async (req, res) => {
         await sendApplicationStatusUpdate(referral.candidateName, referral.candidateEmail, referral.job);
       }
     } catch (emailError) {
-      console.error("Failed to send email notifications:", emailError);
     }*/
 
     res.json(referral);
@@ -263,11 +260,9 @@ exports.updateReferralFields = async (req, res) => {
     ];
     const updates = req.body;
 
-    console.log("Incoming updates:", updates);
 
     const referral = await Referral.findById(req.params.id);
     if (!referral) {
-      console.error("Referral not found for ID:", req.params.id);
       return res.status(404).json({ message: "Referral not found" });
     }
 
@@ -275,16 +270,13 @@ exports.updateReferralFields = async (req, res) => {
     Object.keys(updates).forEach((key) => {
       if (allowedFields.includes(key)) {
         referral[key] = updates[key];
-        console.log(`Updated field ${key} to value ${updates[key]}`);
       }
     });
 
     const savedReferral = await referral.save();
-    console.log("Saved referral to database:", savedReferral);
 
     res.json({ message: "Referral fields updated successfully", referral: savedReferral });
   } catch (err) {
-    console.error("Error updating referral fields:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
@@ -297,7 +289,6 @@ exports.deleteReferral = async (req, res) => {
     }
     res.json({ message: 'Referral deleted successfully', referral });
   } catch (err) {
-    console.error('Error deleting referral:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
