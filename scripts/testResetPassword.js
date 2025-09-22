@@ -1,7 +1,9 @@
+const axios = require("axios");
+
 async function testResetPassword() {
   console.log('Testing resetPassword API...');
-  const userId = '68bdcf22131c403154a093ea'; // Replace with a valid user ID
-  const newPassword = '123456'; // Replace with the desired new password
+  const userId = '68bdcf22131c403154a093e8'; // Replace with a valid user ID
+  const newPassword = 'admin123'; // Replace with the desired new password
   try {
     const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { userId, newPassword }, {
       headers: { 'Content-Type': 'application/json' },

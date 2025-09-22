@@ -92,6 +92,21 @@ async function testUpdateBasicInfoAdmin() {
   }
 }
 
+async function testResetPassword() {
+  console.log('Testing resetPassword API...');
+  const userId = '68bdcf22131c403154a093e8'; // Replace with a valid user ID
+  const newPassword = 'admin123'; // Replace with the desired new password
+  const email = 'admin@ant-tech.asia';
+  try {
+    const response = await axios.post(`${BASE_URL}/db/users/resetPassword`, { email, newPassword }, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    console.log('Reset password response:', response.data);
+  } catch (error) {
+    console.error('Error during API testing:', error.response?.data || error.message);
+  }
+}
+
 //testUpdateBasicInfoAdmin();
 testResetPassword();
 //testUpdateBasicInfoRecruiter();

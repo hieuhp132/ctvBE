@@ -5,18 +5,19 @@ const bcrypt = require('bcrypt');
 const { sendWelcomeEmail, sendResetPasswordEmail } = require('../utils/email');
 
 exports.resetPassword = async (req, res) => {
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ message: "Email is required" });
+  const { email, password } = req.body;
+  if (!email) return res.status(400).json({ message: "[Server]: Email is required" });
+  if (!password) return res.status(400).json({ message: "[Server]: Enter your new password" });
 
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ message: "User not found" });
 
   // Tạo mật khẩu mới
-  const newPassword = "123456";
+  const newPassword = password;
   user.password = newPassword;
   await user.save();
 
-  await sendResetPasswordEmail(user.name || "User", email, newPassword);
+  //await sendResetPasswordEmail(user.name || "User", email, newPassword);
 
   res.json({ message: "New password sent to your email" });
 };
