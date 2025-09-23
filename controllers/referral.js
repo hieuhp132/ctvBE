@@ -64,7 +64,7 @@ exports.createReferral = async (req, res) => {
       bonus: Number(bonus) || 0,
       message: message || "",
     });
-
+    await delay(5000);
     res.status(201).json(referral);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
@@ -130,8 +130,7 @@ exports.getMyReferrals = async (req, res) => {
   }
 };
 
-
-
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 // Admin cập nhật trạng thái/bonus referral
 exports.updateReferralStatus = async (req, res) => {
   try {
@@ -145,6 +144,7 @@ exports.updateReferralStatus = async (req, res) => {
 
     if (typeof bonus === 'number') referral.bonus = bonus;
     if (status) referral.status = status;
+    await delay(5000);
     await referral.save();
 
     // Adjust credits & emit notifications when hired/rejected
@@ -237,6 +237,7 @@ exports.finalizeReferral = async (req, res) => {
     // Mark as finalized
     referral.finalized = true;
     referral.finalizedAt = new Date();
+    await delay(5000);
     await referral.save();
 
     res.json({ success: true, message: "Referral finalized successfully", referral });
