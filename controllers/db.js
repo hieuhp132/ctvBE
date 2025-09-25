@@ -5,6 +5,38 @@ const bcrypt = require('bcrypt');
 const { callSupabaseFunction } = require("../utils/supabaseClient"); // chỗ bạn export supabase function
 
 
+
+function generateRandomPassword(len) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    let password = "";
+    for(let i = 0; i < len; i++){
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
+
+exports.forgotPassword = async (req, res) => {
+    const {email} = req.body;
+    
+    const user = await User.findOne({email});
+    if(!user) return res.status(404).json({message: "[Server]: User not found"});
+    
+    const password = generateRandomPassword(10);
+    user.password = password;
+    await user.save();
+    // ✅ Thêm thông báo bằng Supabase
+    try {
+        const notif = await callSupabaseFunction("resetPassword", {
+            email,
+            password,
+        });
+        console.log("📩 Notification sent to Supabase:", notif);
+    } catch (err) {
+        console.error("⚠️ Failed to send notification to Supabase:", err.message);
+    }
+    res.json({message: "New password sent to your email."});
+}
+
 exports.resetPassword = async (req, res) => {
   const { email, password } = req.body;
   if (!email) return res.status(400).json({ message: "[Server]: Email is required" });

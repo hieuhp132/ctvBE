@@ -123,7 +123,7 @@ const testForgotPassword = async () => {
   }
 };
 
-testSignUp();
+//testSignUp();
 testForgotPassword();
 
 //testListFiles();

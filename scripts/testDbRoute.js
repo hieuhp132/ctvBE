@@ -28,5 +28,15 @@ const testDoSignup = async () => {
   }
 }
 
-testDoSignup();
+const testForgotPassword = async () => {
+  const email = "daovietminhhieu@gmail.com";
+  try {
+    const response = await axios.post(`${baseUrl}/db/users/forgotPassword`, email);
+    console.log(`Password sent to ${email}`);
+  } catch(err) {
+    console.error('Error forgot password:', err.response?.data || err.message);
+  }
+}
+
+//testDoSignup();
 //testDeleteUser();
