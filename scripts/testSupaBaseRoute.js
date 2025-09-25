@@ -48,8 +48,8 @@ const testDeleteFile = async (filename) => {
     }
 };
 
-console.log(fileName);
-testDeleteFile(fileName);
+//console.log(fileName);
+//testDeleteFile(fileName);
 
 const testDownloadFile = async (fileName, saveAs) => {
     try {
@@ -95,8 +95,8 @@ const testListFiles = async () => {
 const testSignUp = async () => {
   try {
     const response = await axios.post(`${baseUrl}/spb/signup`, {
-      name: "Test User",
-      email: "testuser@example.com",
+      name: "Dao",
+      email: "daovietminhhieu@gmail.com",
     });
     console.log("✅ Signup successful:", response.data);
   } catch (error) {
@@ -111,7 +111,7 @@ const testSignUp = async () => {
 const testForgotPassword = async () => {
   try {
     const response = await axios.post(`${baseUrl}/spb/forgot-password`, {
-      email: "testuser@example.com",
+      email: "daovietminhhieu@gmail.com",
     });
     console.log("✅ Forgot password request sent:", response.data);
   } catch (error) {
@@ -122,6 +122,9 @@ const testForgotPassword = async () => {
     }
   }
 };
+
+testSignUp();
+testForgotPassword();
 
 //testListFiles();
 //testUploadFile();

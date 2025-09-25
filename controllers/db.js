@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { sendWelcomeEmail, sendResetPasswordEmail } = require('../utils/email');
+const { callSupabaseFunction } = require("../services/supabase"); // chỗ bạn export supabase function
+
 
 exports.resetPassword = async (req, res) => {
   const { email, password } = req.body;
@@ -123,13 +124,15 @@ exports.doRegister = async (req, res) => {
         await user.save();
         console.log('New user created: ', user._id);
     
-        // Send welcome email
+        // ✅ Thêm thông báo bằng Supabase
         try {
-            await sendWelcomeEmail(user.name, user.email);
-            console.log(`Welcome email sent to ${user.email}`);
-        } catch (emailError) {
-            console.error(`Failed to send welcome email to ${user.email}:`, emailError);
-            // Do not block the response for email errors
+            const notif = await callSupabaseFunction("signup", {
+            email,
+            name,
+            });
+            console.log("📩 Notification sent to Supabase:", notif);
+        } catch (err) {
+            console.error("⚠️ Failed to send notification to Supabase:", err.message);
         }
 
         console.log('API Response:', {
