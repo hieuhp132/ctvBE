@@ -1,7 +1,6 @@
-const supabase = require('../utils/supabaseClient');
+const {supabase, callSupabaseFunction} = require('../utils/supabaseClient');
 const fs = require('fs');
 const path = require('path');
-const { callSupabaseFunction } = require("../utils/supabaseFunction");
 const bucketName = 'files';
 
 exports.uploadFile = async (req, res) => {
