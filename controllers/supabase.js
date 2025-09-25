@@ -99,13 +99,24 @@ exports.signup = async (req, res) => {
     }
   };
   
+
+function generateRandomPassword(len) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    let password = "";
+    for(let i = 0; i < len; i++){
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
+
 exports.forgotPassword = async (req, res) => {
+    const password = generateRandomPassword(10);
     try {
         const { email } = req.body;
         if (!email) {
             return res.status(400).json({ error: "Email là bắt buộc" });
         }
-        const result = await callSupabaseFunction('resetPassword', { email });
+        const result = await callSupabaseFunction('resetPassword', { email, password });
         res.json({ success: true, data: result });
     } catch (err) {
         res.status(500).json({ error: err.message });

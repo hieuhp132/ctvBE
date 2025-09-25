@@ -1,8 +1,8 @@
 const axios = require('axios');
+const baseUrl = 'https://ctvbe.onrender.com'; // Replace with your server's base URL
 
 const testDeleteUser = async () => {
   const userId = '68c8605bcff1ddfe652f22f3'; // Replace with a valid user ID from your database
-  const baseUrl = 'https://ctvbe.onrender.com'; // Replace with your server's base URL
 
   try {
     const response = await axios.delete(`${baseUrl}/db/user/${userId}/remove`);
@@ -12,4 +12,21 @@ const testDeleteUser = async () => {
   }
 };
 
-testDeleteUser();
+const testDoSignup = async () => {
+
+  const payload = {
+    name: "Im For Testing",
+    email: "daovietminhhieu@gmail.com",
+    password: "123456",
+    promocode: null,
+  }
+  try {
+    const response = await axios.post(`${baseUrl}/db/users/signup`, payload);
+    console.log('User successfully registered', response.data);
+  } catch(err) {
+    console.error('Error signup:', err.response?.data || err.message);
+  }
+}
+
+testDoSignup();
+//testDeleteUser();
