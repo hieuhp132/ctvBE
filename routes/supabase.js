@@ -13,5 +13,9 @@ router.post("/upload", upload.single("file"), supabaseCtrl.uploadFile);
 router.get("/download/:filename", supabaseCtrl.downloadFile);
 router.delete("/delete/:filename", supabaseCtrl.deleteFile);
 router.get("/list", supabaseCtrl.listFiles);
+// Đăng ký tài khoản
+router.post("/signup", supabaseCtrl.signup);
+// Quên mật khẩu
+router.post("/forgot-password", supabaseCtrl.forgotPassword);
 
 module.exports = router;

@@ -79,17 +79,49 @@ const testDownloadFile = async (fileName, saveAs) => {
 };
 
 const testListFiles = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/spb/list`);
-      console.log('✅ List of files:', response.data.files);
-    } catch (error) {
-      if (error.response) {
-        console.error('❌ List files failed:', error.response.status, error.response.data);
-      } else {
-        console.error('❌ List files error:', error.message);
-      }
+  try {
+    const response = await axios.get(`${baseUrl}/spb/list`);
+    console.log('✅ List of files:', response.data.files);
+  } catch (error) {
+    if (error.response) {
+      console.error('❌ List files failed:', error.response.status, error.response.data);
+    } else {
+      console.error('❌ List files error:', error.message);
     }
-  };
-  
+  }
+};
+
+// ================== AUTH TEST ==================
+const testSignUp = async () => {
+  try {
+    const response = await axios.post(`${baseUrl}/spb/signup`, {
+      name: "Test User",
+      email: "testuser@example.com",
+    });
+    console.log("✅ Signup successful:", response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error("❌ Signup failed:", error.response.status, error.response.data);
+    } else {
+      console.error("❌ Signup error:", error.message);
+    }
+  }
+};
+
+const testForgotPassword = async () => {
+  try {
+    const response = await axios.post(`${baseUrl}/spb/forgot-password`, {
+      email: "testuser@example.com",
+    });
+    console.log("✅ Forgot password request sent:", response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error("❌ Forgot password failed:", error.response.status, error.response.data);
+    } else {
+      console.error("❌ Forgot password error:", error.message);
+    }
+  }
+};
+
 //testListFiles();
 //testUploadFile();

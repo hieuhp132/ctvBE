@@ -1,7 +1,7 @@
 const supabase = require('../utils/supabaseClient');
 const fs = require('fs');
 const path = require('path');
-
+const { callSupabaseFunction } = require("../utils/supabaseFunction");
 const bucketName = 'files';
 
 exports.uploadFile = async (req, res) => {
@@ -86,3 +86,29 @@ exports.listFiles = async (req, res) => {
     if(error) return res.status(500).json({ error: error.message });
     res.json({ files: data });
 }
+
+exports.signup = async (req, res) => {
+    try {
+      const { email, name } = req.body;
+      if (!email || !name) {
+        return res.status(400).json({ error: "Email và tên là bắt buộc" });
+      }
+      const result = await callSupabaseFunction('signup', { email, name });
+      res.json({ success: true, data: result });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+  
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ error: "Email là bắt buộc" });
+        }
+        const result = await callSupabaseFunction('resetPassword', { email });
+        res.json({ success: true, data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
