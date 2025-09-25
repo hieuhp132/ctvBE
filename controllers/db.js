@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { callSupabaseFunction } = require("../services/supabase"); // chỗ bạn export supabase function
+const { callSupabaseFunction } = require("../utils/supabaseClient"); // chỗ bạn export supabase function
 
 
 exports.resetPassword = async (req, res) => {
