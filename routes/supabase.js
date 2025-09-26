@@ -17,5 +17,5 @@ router.get("/list", supabaseCtrl.listFiles);
 router.post("/signup", supabaseCtrl.signup);
 // Quên mật khẩu
 router.post("/forgot-password", supabaseCtrl.forgotPassword);
-
+router.post("/update-status", supabaseCtrl.updateStatus);
 module.exports = router;

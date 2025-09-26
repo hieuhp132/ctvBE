@@ -122,3 +122,34 @@ exports.forgotPassword = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.updateStatus = async (req, res) => {
+    try {
+
+
+    } catch(err) {
+        res.status(500).json({ error: err.message });      
+    }
+}
+
+exports.updateStatus = async (req, res) => {
+    try {
+      const { email, status } = req.body;
+  
+      if (!email || !status) {
+        return res.status(400).json({ error: "Email và trạng thái là bắt buộc" });
+      }
+  
+      // Gọi Supabase Edge Function (đã setup trong utils/supabaseClient.js)
+      const result = await callSupabaseFunction("updateStatus", { email, status });
+  
+      return res.json({
+        success: true,
+        data: result,
+      });
+    } catch (err) {
+      console.error("Error in updateStatus:", err.message);
+      return res.status(500).json({ error: err.message });
+    }
+  };
+  

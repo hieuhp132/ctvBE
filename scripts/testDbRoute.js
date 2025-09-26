@@ -29,14 +29,16 @@ const testDoSignup = async () => {
 }
 
 const testForgotPassword = async () => {
-  const email = "daovietminhhieu@gmail.com";
+
+  const payload = { email: "daovietminhhieu@gmail.com" };
   try {
-    const response = await axios.post(`${baseUrl}/db/users/forgotPassword`, email);
-    console.log(`Password sent to ${email}`);
+    const response = await axios.post(`${baseUrl}/db/users/forgotPassword`, payload);
+    console.log(`Password sent`);
   } catch(err) {
     console.error('Error forgot password:', err.response?.data || err.message);
   }
 }
 
+testForgotPassword();
 //testDoSignup();
 //testDeleteUser();

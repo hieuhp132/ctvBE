@@ -24,7 +24,7 @@ exports.forgotPassword = async (req, res) => {
     const password = generateRandomPassword(10);
     user.password = password;
     await user.save();
-    // ✅ Thêm thông báo bằng Supabase
+    // ✅ Thêm thông báo qua mail bằng Supabase
     try {
         const notif = await callSupabaseFunction("resetPassword", {
             email,

@@ -4,13 +4,12 @@ const path = require('path');
 const FormData = require('form-data');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Updated to include /api prefix
-const recruiterCredit = { email: 'ctv1@example.com', password: '123456' }; // Replace with valid recruiter credentials
+const recruiterCredit = { email: 'hieuhp132@gmail.com', password: '123456' }; // Replace with valid recruiter credentials
 
 const adminCredit = { email: 'admin@ant-tech.asia', password:'admin123'};
 
 async function getToken(isAdmin) {
   console.log('Fetching token...');
-  
   try {
     const response = await axios.post(`${BASE_URL}/db/users/login`, isAdmin? adminCredit : recruiterCredit, {
       headers: { 'Content-Type': 'application/json' },
@@ -29,31 +28,47 @@ async function getToken(isAdmin) {
 }
 
 //router.get("/mine", auth, role(["recruiter"]), referralCtrl.getMyReferrals);
-const testGetReferralRecruiter = async () => {
+const testGetReferral = async (isAdmin) => {
+    console.log(`Log in as ${isAdmin}`);
+    const token = await getToken(isAdmin);
 
-    const token = await getToken(false);
-
+    const endpoint = isAdmin ? "/api/referrals" : "/api/referrals/mine";
     try {
-        const response = await axios.get(`${BASE_URL}/api/referrals/mine`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },           
-        });
-        console.log('Recruiter referrals fetched successfully:', response.data);
+      const response = await axios.get(`${BASE_URL}${endpoint}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+        console.log('Referrals fetched successfully:', response.data);
 
     } catch (error) {
-        console.error('Error fetching recruiter referrals:', error.response?.data || error.message);
+        console.error('Error fetching referrals:', error.response?.data || error.message);
     }
 }
-//testGetReferralRecruiter();
 
+const testUpdateReferalStatus = async (id, status, bonus) => {
+
+  console.log("Log in as Admin");
+  const token = await getToken(true);
+  
+  const payload = {
+    status,
+    bonus
+  }
+  try {
+    const response = await axios.put(`${BASE_URL}/api/referrals/${id}`, payload, {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    console.log("Status updated.!");
+  } catch (err) {
+    console.error('Error updating referral status:', err.response?.data || err.message);
+  }
+ 
+}
 
 const testReferralRoute = async () => {
   const filePath = path.join(__dirname, '07_Softwaresicherheit2.pdf');
-
+  
   const token = await getToken(false);  
-
+  
   const formData = new FormData();
   formData.append('jobId', '68cc407e3bf5f4ed8c6fb09f'); // Replace with a valid job ID
   formData.append('candidateName', 'Last Candidate Tested');
@@ -65,7 +80,7 @@ const testReferralRoute = async () => {
   formData.append('bonus', '500');
   formData.append('message', 'This is a test referral');
   formData.append('cv', fs.createReadStream(filePath));
-
+  
   try {
     const response = await axios.post(`${BASE_URL}/api/referrals`, formData, {
       headers: {
@@ -73,11 +88,13 @@ const testReferralRoute = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    
     console.log('Referral route test successful:', response.data);
   } catch (error) {
     console.error('Referral route test failed:', error.response?.data || error.message);
   } 
 };
 
-testReferralRoute();
+testGetReferral({isAdmin: true});
+//testUpdateReferalStatus("68ccf54da6ec619087586639", "interviewing", 0);
+//testReferralRoute();

@@ -123,8 +123,22 @@ const testForgotPassword = async () => {
   }
 };
 
-//testSignUp();
-testForgotPassword();
+const testUpdateStatus = async (email, status) => {
+  const payload = {email, status};
+  try {
+    const response = await axios.post(`${baseUrl}/spb/update-status`, payload);
+    console.log("Status update sent to", email);
+  } catch(err) {
+    console.error("❌ Forgot password failed:", err.response.status, err.response.data);
+  }
+}
 
-//testListFiles();
-//testUploadFile();
+const runTests = async () => {
+  
+  testUpdateStatus("hieuhp132@gmail.com", "interviewing");
+  //testSignUp();
+  //testForgotPassword();
+  //testListFiles();
+  //testUploadFile();
+}
+runTests();
