@@ -4,7 +4,7 @@ const path = require('path');
 const FormData = require('form-data');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Updated to include /api prefix
-const recruiterCredit = { email: 'hieuhp132@gmail.com', password: '123456' }; // Replace with valid recruiter credentials
+const recruiterCredit = { email: 'daovietminhhieu@gmail.com', password: '123456' }; // Replace with valid recruiter credentials
 
 const adminCredit = { email: 'admin@ant-tech.asia', password:'admin123'};
 
@@ -37,8 +37,18 @@ const testGetReferral = async (isAdmin) => {
       const response = await axios.get(`${BASE_URL}${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-        console.log('Referrals fetched successfully:', response.data);
+      // Print recruiter emails
 
+      //console.log("Full response:", JSON.stringify(response.data, null, 2));
+
+      // Your API might return { data: [...] } or just [...]
+      //const referrals = response.data.data || response.data;
+  
+      //console.log("Single referral recruiter email:", referrals.recruiter?.email);
+    
+      //console.log("Response", response.data);
+      const firstReferral = response.data.items[0];
+      console.log("First recruiter email:", firstReferral.recruiter.email);
     } catch (error) {
         console.error('Error fetching referrals:', error.response?.data || error.message);
     }
@@ -115,7 +125,7 @@ const testReferralRoute = async () => {
 
 const runTests = () => {
 //testUpdateReferralFields("68ccf54da6ec619087586639", {candidateEmail: "hieuhp132@gmail.com", bonus: 500});
-testGetReferral(false);
+//testGetReferral(true);
 //testUpdateReferalStatus("68ccf54da6ec619087586639", "offer", 0);
 //testReferralRoute();
 }
