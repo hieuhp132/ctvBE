@@ -150,10 +150,10 @@ exports.updateReferralStatus = async (req, res) => {
 
     // Email notification after status updated.
     try {
-      console.log(`After updated, status: ${referral.status}, bonus: ${referral.bonus}, ctv: ${referral.ctv}`);
+      console.log(`After updated, status: ${referral.status}, bonus: ${referral.bonus}, email: ${referral.recruiter.email}`);
       
       // Gọi Supabase Edge Function (đã setup trong utils/supabaseClient.js)
-      const email = referral.ctv;
+      const email = referral.recruiter.email;
       const result = await callSupabaseFunction("updateStatus", { email, status });
       return res.json({
         success: true,
