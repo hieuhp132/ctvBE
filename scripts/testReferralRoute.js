@@ -48,7 +48,7 @@ const testGetReferral = async (isAdmin) => {
     
       //console.log("Response", response.data);
       const firstReferral = response.data.items[0];
-      console.log("First recruiter email:", firstReferral.recruiter.email);
+      console.log("First recruiter email:", firstReferral);
     } catch (error) {
         console.error('Error fetching referrals:', error.response?.data || error.message);
     }
@@ -125,7 +125,7 @@ const testReferralRoute = async () => {
 
 const runTests = () => {
 //testUpdateReferralFields("68ccf54da6ec619087586639", {candidateEmail: "hieuhp132@gmail.com", bonus: 500});
-//testGetReferral(true);
+testGetReferral(true);
 //testUpdateReferalStatus("68ccf54da6ec619087586639", "offer", 0);
 //testReferralRoute();
 }
