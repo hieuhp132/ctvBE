@@ -1,6 +1,7 @@
 const Referral = require("../models/Referral");
 const Job = require("../models/Job");
 const User = require("../models/User");
+const { callSupabaseFunction } = require("../utils/supabaseClient");
 
 exports.downloadCV = async (req, res) => {
   try {
