@@ -115,7 +115,7 @@ const testReferralRoute = async () => {
 
 const runTests = () => {
 //testUpdateReferralFields("68ccf54da6ec619087586639", {candidateEmail: "hieuhp132@gmail.com", bonus: 500});
-testGetReferral({isAdmin: true});
+testGetReferral(false);
 //testUpdateReferalStatus("68ccf54da6ec619087586639", "offer", 0);
 //testReferralRoute();
 }
