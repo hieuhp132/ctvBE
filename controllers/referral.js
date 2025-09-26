@@ -220,40 +220,60 @@ exports.finalizeReferral = async (req, res) => {
   }
 };
 
-// Admin cập nhật các trường bổ sung của referral
+
+// Các field được phép update
+const ALLOWED_FIELDS = [
+  "recruiter",
+  "admin",
+  "candidateName",
+  "candidateEmail",
+  "candidatePhone",
+  "cvFileName",
+  "cvKey",
+  "cvUrl",
+  "linkedin",
+  "portfolio",
+  "suitability",
+  "status",
+  "bonus",
+  "message",
+  "finalized",
+];
+
+// Admin cập nhật referral
 exports.updateReferralFields = async (req, res) => {
   try {
-    const allowedFields = [
-      "finalized",
-      "finalizedAt",
-      "message",
-      "linkedin",
-      "portfolio",
-      "candidatePhone",
-      "candidateEmail",
-    ];
     const updates = req.body;
-
-
     const referral = await Referral.findById(req.params.id);
+
     if (!referral) {
       return res.status(404).json({ message: "Referral not found" });
     }
 
-    // Update only allowed fields
-    Object.keys(updates).forEach((key) => {
-      if (allowedFields.includes(key)) {
-        referral[key] = updates[key];
-      }
+    // Lọc và apply các field hợp lệ
+    const fieldsToUpdate = Object.keys(updates).filter((key) =>
+      ALLOWED_FIELDS.includes(key)
+    );
+
+    if (fieldsToUpdate.length === 0) {
+      return res.json({ message: "No valid fields to update", referral });
+    }
+
+    fieldsToUpdate.forEach((key) => {
+      referral[key] = updates[key];
     });
 
     const savedReferral = await referral.save();
 
-    res.json({ message: "Referral fields updated successfully", referral: savedReferral });
+    res.json({
+      message: "Referral updated successfully",
+      referral: savedReferral,
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 exports.deleteReferral = async (req, res) => {
   try {
