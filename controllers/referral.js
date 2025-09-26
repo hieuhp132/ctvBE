@@ -147,49 +147,22 @@ exports.updateReferralStatus = async (req, res) => {
     await delay(5000);
     await referral.save();
 
-    // Adjust credits & emit notifications when hired/rejected
-   /*
+    // Email notification after status updated.
     try {
-      //const Notification = require("../models/Notification");
-      if (status === 'hired') {
-        //await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Hired. Bonus: ${referral.bonus}` });
-        //await Notification.create({ role: 'admin', message: `Bonus ${referral.bonus} paid to recruiter ${referral.recruiter}` });
-        // Adjust admin and recruiter credits in DB
-        const admin = await User.findOne({ role: "admin" });
-        if (admin) {
-          admin.credit = Math.max(0, (admin.credit || 0) - (referral.bonus || 0));
-          await admin.save();
-        }
-        const recruiter = await User.findById(referral.recruiter);
-        if (recruiter) {
-          recruiter.credit = (recruiter.credit || 0) + (referral.bonus || 0);
-          await recruiter.save();
-        }
-      } else if (status === 'rejected') {
-        await Notification.create({ role: 'recruiter', message: `Profile ${referral.candidateName} has been Rejected` });
-      }
-    } catch {}
-   */
-
-    // Send email notifications to all related parties
-    /*const { sendApplicationStatusUpdate } = require('../utils/email');
-    try {
-      const admin = await User.findById(referral.admin);
-      const recruiter = await User.findById(referral.recruiter);
-
-      if (admin) {
-        await sendApplicationStatusUpdate(referral.candidateName, admin.email, referral.job);
-      }
-      if (recruiter) {
-        await sendApplicationStatusUpdate(referral.candidateName, recruiter.email, referral.job);
-      }
-      if (referral.candidateEmail) {
-        await sendApplicationStatusUpdate(referral.candidateName, referral.candidateEmail, referral.job);
-      }
-    } catch (emailError) {
-    }*/
-
-    res.json(referral);
+      console.log(`After updated, status: ${referral.status}, bonus: ${referral.bonus}`);
+      
+      // Gọi Supabase Edge Function (đã setup trong utils/supabaseClient.js)
+      const email = referral.candidateEmail;
+      const result = await callSupabaseFunction("updateStatus", { email, status });
+      return res.json({
+        success: true,
+        data: result,
+      });
+    } catch (err) {
+      console.error("Error in updateStatus:", err.message);
+      return res.status(500).json({ error: err.message });
+    }
+  
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }

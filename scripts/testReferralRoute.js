@@ -64,6 +64,24 @@ const testUpdateReferalStatus = async (id, status, bonus) => {
  
 }
 
+const testUpdateReferralFields = async (id, updates) => {
+  console.log("Logging in as Admin...");
+  const token = await getToken(true);
+
+  const endpoint = `${BASE_URL}/api/referrals/${id}/fields`; // endpoint update fields
+  try {
+    const response = await axios.put(endpoint, updates, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    console.log("Referral fields updated successfully:");
+    console.dir(response.data, { depth: null });
+  } catch (err) {
+    console.error("Error updating referral fields:", err.response?.data || err.message);
+  }
+};
+
+
 const testReferralRoute = async () => {
   const filePath = path.join(__dirname, '07_Softwaresicherheit2.pdf');
   
@@ -95,6 +113,7 @@ const testReferralRoute = async () => {
   } 
 };
 
-testGetReferral({isAdmin: true});
+testUpdateReferralFields("68ccf54da6ec619087586639", {bonus: 500});
+//testGetReferral({isAdmin: true});
 //testUpdateReferalStatus("68ccf54da6ec619087586639", "interviewing", 0);
 //testReferralRoute();
