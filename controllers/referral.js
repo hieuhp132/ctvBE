@@ -152,7 +152,7 @@ exports.updateReferralStatus = async (req, res) => {
     try {
       const recruiter = await User.findById(referral.recruiter).select("email");
       console.log(recruiter.email);
-      console.log(`After updated, status: ${referral.status}, bonus: ${referral.bonus}, email: ${recruiter.email}`);
+      console.log(`After updated, status: ${referral.status}, bonus: ${referral.bonus}, email: ${recruiter.email}, name: ${recruiter.name}`);
       
       // Gọi Supabase Edge Function (đã setup trong utils/supabaseClient.js)
       const email = recruiter.email;
