@@ -156,7 +156,8 @@ exports.updateReferralStatus = async (req, res) => {
       
       // Gọi Supabase Edge Function (đã setup trong utils/supabaseClient.js)
       const email = recruiter.email;
-      const result = await callSupabaseFunction("updateStatus", { email, status });
+      const name = recruiter.name;
+      const result = await callSupabaseFunction("updateStatus", { email, status, name });
       return res.json({
         success: true,
         data: result,
