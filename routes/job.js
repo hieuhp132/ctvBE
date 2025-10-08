@@ -22,4 +22,4 @@ router.get("/", jobCtrl.getAllJobs);
 router.get("/:id", jobCtrl.getJobById);
 router.delete("/reset", jobCtrl.resetJobs); // For testing purposes only});
 
-module.exports = router;
+module.exports = router;    

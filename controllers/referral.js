@@ -65,7 +65,7 @@ exports.createReferral = async (req, res) => {
       bonus: Number(bonus) || 0,
       message: message || "",
     });
-    await delay(5000);
+    await delay(1000);
     res.status(201).json(referral);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
