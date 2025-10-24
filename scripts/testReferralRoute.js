@@ -4,9 +4,9 @@ const path = require('path');
 const FormData = require('form-data');
 
 const BASE_URL = 'https://ctvbe.onrender.com'; // Updated to include /api prefix
-const recruiterCredit = { email: 'daovietminhhieu@gmail.com', password: '123456' }; // Replace with valid recruiter credentials
+const recruiterCredit = { email: 'hieuhp132@gmail.com', password: '123456' }; // Replace with valid recruiter credentials
 
-const adminCredit = { email: 'admin@ant-tech.asia', password:'admin123'};
+const adminCredit = { email: 'admin@ant-tech.asia', password:'admin1234@'};
 
 async function getToken(isAdmin) {
   console.log('Fetching token...');
@@ -19,7 +19,7 @@ async function getToken(isAdmin) {
     if (!token) {
       throw new Error('Token not returned from login endpoint');
     }
-    console.log('Recruiter token fetched successfully:', token);
+    console.log('token fetched successfully:', token);
     return token;
   } catch (error) {
     console.error('Error fetching recruiter token:', error.response?.data || error.message);
