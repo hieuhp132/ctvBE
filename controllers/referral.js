@@ -74,7 +74,7 @@ exports.createReferral = async (req, res) => {
 // Admin xem referral gửi tới mình
 exports.getReferrals = async (req, res) => {
   try {
-    const { page = 1, limit = 50, status, jobId, q = "", finalized } = req.query;
+    const { page = 1, limit = 1000, status, jobId, q = "", finalized } = req.query;
     const filter = { admin: req.user.id };
 
     if (status) filter.status = status;
